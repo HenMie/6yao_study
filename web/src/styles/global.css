@@ -1,0 +1,152 @@
+:root {
+  --paper: #FBF9F4;
+  --paper-2: #F4F0E6;
+  --paper-3: #EDE7D9;
+  --ink: #16191C;
+  --ink-2: #3D4348;
+  --ink-3: #6B7076;
+  --ink-4: #9AA0A6;
+  --rule: #DED6C4;
+  --rule-2: #C9BFA9;
+  --accent: #A6331F;
+  --accent-wash: #F3E4DE;
+  --good: #3F7D5A;
+  --bad: #A6331F;
+
+  --serif: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  --sans: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+  --mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; margin: 0; line-height: 1.5; letter-spacing: .02em; }
+h1 { font-size: 28px; }
+h2 { font-size: 20px; }
+p { margin: 0 0 12px; }
+
+.wrap { max-width: 1160px; margin: 0 auto; padding: 32px 24px 80px; }
+.kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .18em; color: var(--accent); text-transform: uppercase; }
+.lede { color: var(--ink-3); font-size: 13px; max-width: 64ch; }
+.page-head { border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 32px; }
+.page-head h1 { margin: 4px 0 6px; }
+
+.muted { color: var(--ink-3); }
+.tiny { font-size: 12px; }
+.mono { font-family: var(--mono); }
+.serif { font-family: var(--serif); }
+
+/* ---------- 卦盘（组件库没有这个，属领域图形，自绘） ---------- */
+.pan { font-size: 13px; }
+.pan-head, .pan-row {
+  display: grid;
+  grid-template-columns: 44px 56px 52px 1fr 40px 28px;
+  gap: 8px; align-items: center;
+}
+.pan-head {
+  padding: 6px 12px; font-size: 11px; color: var(--ink-4);
+  letter-spacing: .1em; background: var(--paper-2); border-bottom: 1px solid var(--rule);
+}
+.pan-row {
+  padding: 9px 12px; border-bottom: 1px solid #EFEADF;
+  position: relative; transition: background .14s;
+}
+.pan-row:last-child { border-bottom: 0; }
+.pan-row:hover { background: var(--paper-2); }
+.pan-row:hover::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--accent);
+}
+.pan-row.is-shi { background: rgba(166, 51, 31, .035); }
+.pan-row .shen { font-size: 12px; color: var(--ink-3); }
+.pan-row .nj { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.pan-row .shiy b { font-family: var(--serif); }
+.pan-row .mark { font-family: var(--mono); color: var(--accent); text-align: center; }
+.kong { font-size: 10px; color: var(--ink-4); border: 1px solid var(--rule); padding: 0 3px; border-radius: 2px; margin-left: 3px; }
+
+/* 爻：CSS 绘制，避免字体缺字。宽度固定，避免 1fr 把爻拉成横条 */
+.yao { display: flex; gap: 7px; height: 4px; width: 104px; }
+.yao i { display: block; height: 100%; background: var(--ink); border-radius: 1px; }
+.yao.yang i { flex: 1; }
+.yao.yin i:first-child { flex: 0 0 44%; }
+.yao.yin i:last-child { flex: 0 0 44%; margin-left: auto; }
+
+.fushen { padding: 8px 12px; border-top: 1px dashed var(--rule); font-size: 12px; color: var(--ink-3); }
+
+/* 印章标签 */
+.seal {
+  display: inline-block; padding: 1px 7px; font-size: 11px; font-family: var(--serif);
+  letter-spacing: .08em; border: 1.5px solid var(--accent); color: var(--accent);
+  border-radius: 2px; transform: rotate(-1.5deg); background: rgba(166, 51, 31, .04);
+}
+.seal.plain { transform: none; border-width: 1px; border-color: var(--rule-2); color: var(--ink-3); background: none; }
+
+/* 回视频：1px 实线 55% 朱砂，与术语点线区分 */
+.vref {
+  color: var(--ink-2); border-bottom: 1px solid rgba(163, 63, 44, .55);
+  text-decoration: none; font-family: var(--mono); font-size: 12px; white-space: nowrap;
+}
+.vref:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* 单元行 */
+.unit {
+  display: grid; grid-template-columns: 26px 1fr auto; gap: 12px;
+  padding: 10px 12px 10px 8px; border-bottom: 1px solid #F1ECE1;
+  border-left: 3px solid transparent; cursor: pointer; transition: background .14s;
+}
+.unit:hover { background: var(--paper-2); border-left-color: var(--accent); }
+.unit .idx { font-family: var(--mono); font-size: 11px; color: var(--ink-4); padding-top: 3px; }
+.unit .t { font-size: 13px; font-weight: 500; }
+.unit .p {
+  font-size: 12px; color: var(--ink-3); margin-top: 3px; line-height: 1.7;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.unit.done .idx { color: var(--good); }
+.unit.done .t::after { content: ' ✓'; color: var(--good); font-size: 12px; }
+.keys { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.keys span {
+  font-size: 11px; color: var(--ink-3); background: var(--paper-2);
+  border: 1px solid var(--rule); padding: 1px 6px; border-radius: 2px;
+}
+
+/* 集卡 */
+.vol-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 1239px) { .vol-cards { grid-template-columns: repeat(2, 1fr); } }
+.vol-card {
+  background: #fff; border: 1px solid var(--rule); border-radius: 2px;
+  padding: 14px 16px; cursor: pointer; transition: box-shadow .18s, border-color .18s;
+}
+.vol-card:hover { box-shadow: 0 2px 8px rgba(22, 25, 28, .09); }
+.vol-card.on { border-color: var(--accent); }
+.vol-card h3 { font-size: 15px; margin: 6px 0 4px; }
+.vol-card .vc-goal { font-size: 12px; color: var(--ink-3); line-height: 1.6; margin: 0 0 10px; min-height: 38px; }
+.vol-no {
+  font-family: var(--mono); font-size: 12px; color: var(--paper);
+  background: var(--ink); width: 22px; height: 22px;
+  display: inline-grid; place-items: center; border-radius: 2px;
+}
+.vc-top { display: flex; align-items: center; gap: 8px; }
+.vc-foot { display: flex; justify-content: space-between; margin-top: 8px; }
+
+/* 判卷 */
+.quiz-row { display: grid; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #EFEADF; }
+.quiz-row.right { border-left: 2px solid rgba(63, 125, 90, .55); }
+.quiz-row.wrong { border-left: 3px solid var(--bad); }
+.fb { font-size: 11px; color: var(--ink-2); line-height: 1.6; white-space: nowrap; overflow-x: auto; }
+.fb .x { color: var(--bad); font-weight: 600; margin-right: 4px; }
+.fb .ok { color: var(--good); }
+
+.case-shell { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start; }
+.case-detail { display: grid; grid-template-columns: 40% 60%; gap: 32px; align-items: start; }
+@media (max-width: 1239px) {
+  .case-shell, .case-detail { grid-template-columns: 1fr; }
+}

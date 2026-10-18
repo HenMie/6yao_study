@@ -1,0 +1,11 @@
+import { chromium } from 'playwright-core'
+const browser = await chromium.launch({ channel: 'msedge', headless: true })
+const page = await browser.newPage({ viewport: { width: 1440, height: 1050 }, deviceScaleFactor: 1.5 })
+await page.goto('http://127.0.0.1:4173/#/cast', { waitUntil: 'networkidle' })
+await page.getByRole('button', { name: '连摇六次' }).click()
+await page.waitForTimeout(500)
+await page.locator('.gw-more').click()
+await page.waitForTimeout(300)
+await page.screenshot({ path: 'shots/guawen.png', fullPage: true })
+console.log('saved shots/guawen.png')
+await browser.close()
