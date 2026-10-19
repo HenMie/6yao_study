@@ -69,10 +69,10 @@ const nav = [
   content: ''; position: absolute; left: 14px; right: 14px; bottom: -19px;
   height: 2px; background: var(--accent);
 }
-.topbar-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-4); white-space: nowrap; }
+.topbar-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
 .footer {
   max-width: 1160px; margin: 0 auto; padding: 24px 24px 0;
-  border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-4);
+  border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-3);
 }
 .footer p { max-width: 72ch; }
 @media (max-width: 1239px) {

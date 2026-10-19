@@ -6,6 +6,7 @@ import { VOLS, STAMPS } from '../content/data'
 import { toggleDone, isDone } from '../core/store'
 import VideoRef from '../components/VideoRef.vue'
 import ContentBlocks from '../components/ContentBlocks.vue'
+import LessonExercise from '../components/LessonExercise.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -17,7 +18,6 @@ const units = computed(() => {
 })
 const i = computed(() => Math.max(0, units.value.findIndex(u => u.id === route.params.id)))
 const u = computed(() => units.value[i.value])
-const hasDetail = computed(() => Array.isArray(u.value.d) && u.value.d.length > 0)
 </script>
 
 <template>
@@ -26,7 +26,7 @@ const hasDetail = computed(() => Array.isArray(u.value.d) && u.value.d.length > 
       <div class="kicker">§{{ String(i + 1).padStart(2, '0') }} · P{{ u.vol.slice(1) }} {{ u.volTitle }}</div>
       <h1>{{ u.t }}</h1>
       <p class="lede" style="display:flex;gap:12px;align-items:center">
-        <VideoRef :vid="u.vol" :t="STAMPS[u.id] || 0" />
+        <VideoRef :vid="u.vol" :t="STAMPS[u.id]" />
         <span>单元 {{ i + 1 }} / {{ units.length }}</span>
       </p>
     </div>
@@ -43,10 +43,8 @@ const hasDetail = computed(() => Array.isArray(u.value.d) && u.value.d.length > 
     </section>
 
     <!-- 分节讲解 -->
-    <ContentBlocks v-if="hasDetail" :blocks="u.d" />
-
-    <!-- 无扩写的单元兜底提示（理论上 34 个单元都已扩写） -->
-    <p v-else class="tiny muted" style="margin-top:20px">本单元暂无分节讲解，要点见上方速览。</p>
+    <ContentBlocks :blocks="u.d" />
+    <LessonExercise :key="u.id" :exercise="u.exercise" />
 
     <!-- 练习条 -->
     <div class="drill">
@@ -60,7 +58,7 @@ const hasDetail = computed(() => Array.isArray(u.value.d) && u.value.d.length > 
 
     <!-- 口径说明 -->
     <p class="tiny muted note">
-      本页内容为课件要点的本站整理转述（按《增删卜易》原章次序），非板书逐字记录；老师原话请回视频听。
+      规则说明依课程画面整理转述；演算与自测为本站编写，非板书逐字记录。视频时间为已核对的画面采样点，不代表章节起点；口述细节请回原片核对。
     </p>
 
     <!-- 底部操作 -->

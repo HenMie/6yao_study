@@ -28,10 +28,10 @@ const quizTimes = computed(() => state.value.quiz.length)
     <div class="page-head">
       <div class="kicker">Study Path</div>
       <h1>学习路径</h1>
-      <p class="lede">8 集视频拆成 {{ units.length }} 个知识点，平均每个 9 分钟——一次坐下就能完成一个。先看全图，再点开某一集。</p>
+      <p class="lede">8 集视频，约 5 小时，整理为 {{ units.length }} 个学习单元。每节有规则讲解、自测解析与原片画面定位；按自己的节奏逐项练习。</p>
     </div>
 
-    <n-card style="margin-bottom:24px;border-left:3px solid var(--accent)">
+    <n-card style="margin-bottom:24px;border-top:2px solid var(--accent)">
       <div class="kicker">§{{ String(units.findIndex(u => u.id === next.id) + 1).padStart(2, '0') }} · 当前单元</div>
       <h2 style="font-size:26px;margin:8px 0">{{ next.t }}</h2>
       <p style="color:var(--ink-2);font-size:14px;max-width:56ch">{{ next.p }}</p>
@@ -62,7 +62,13 @@ const quizTimes = computed(() => state.value.quiz.length)
       <div
         v-for="v in VOLS" :key="v.id" class="vol-card"
         :class="{ on: openVol === v.id }"
+        role="button" tabindex="0"
+        :aria-expanded="openVol === v.id"
+        :aria-controls="`vol-${v.id}`"
+        :aria-label="`${v.title}，${volDone(v)}/${v.chapters.length} 个单元已学，${openVol === v.id ? '收起' : '展开'}单元`"
         @click="openVol = openVol === v.id ? null : v.id"
+        @keydown.enter.prevent="openVol = openVol === v.id ? null : v.id"
+        @keydown.space.prevent="openVol = openVol === v.id ? null : v.id"
       >
         <div class="vc-top">
           <span class="vol-no">{{ v.vol }}</span>
@@ -80,23 +86,24 @@ const quizTimes = computed(() => state.value.quiz.length)
       </div>
     </div>
 
-    <n-card v-if="openVol" style="margin-top:24px" :title="`P${curVol.vol} · ${curVol.title}`">
+    <n-card v-if="openVol" :id="`vol-${curVol.id}`" style="margin-top:24px" :title="`P${curVol.vol} · ${curVol.title}`">
       <template #header-extra>
         <span class="tiny muted">{{ curVol.chapters.length }} 个单元　<VideoRef :vid="curVol.id" /></span>
       </template>
       <div
         v-for="(c, i) in curVol.chapters" :key="c.id"
-        class="unit" :class="{ done: isDone(c.id) }"
-        @click="router.push('/unit/' + c.id)"
+        class="unit-row" :class="{ done: isDone(c.id) }"
       >
-        <div class="idx">{{ String(units.findIndex(u => u.id === c.id) + 1).padStart(2, '0') }}</div>
-        <div>
-          <div class="t">{{ c.t }}</div>
-          <div class="p">{{ c.p }}</div>
-          <div class="keys"><span v-for="k in c.keys" :key="k">{{ k }}</span></div>
-          <div style="margin-top:8px"><VideoRef :vid="curVol.id" :t="STAMPS[c.id] || 0" /></div>
-        </div>
-        <div class="tiny muted">{{ isDone(c.id) ? '已学' : '未学' }}</div>
+        <router-link class="unit" :class="{ done: isDone(c.id) }" :to="'/unit/' + c.id" :aria-label="`${c.t}${isDone(c.id) ? '，已学' : '，未学'}`">
+          <div class="idx">{{ String(units.findIndex(u => u.id === c.id) + 1).padStart(2, '0') }}</div>
+          <div>
+            <div class="t">{{ c.t }}</div>
+            <div class="p">{{ c.p }}</div>
+            <div class="keys"><span v-for="k in c.keys" :key="k">{{ k }}</span></div>
+          </div>
+          <div class="tiny muted">{{ isDone(c.id) ? '已学' : '未学' }}</div>
+        </router-link>
+        <div class="unit-video"><VideoRef :vid="curVol.id" :t="STAMPS[c.id]" /></div>
       </div>
     </n-card>
   </div>

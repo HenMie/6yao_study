@@ -53,7 +53,7 @@ p { margin: 0 0 12px; }
   gap: 8px; align-items: center;
 }
 .pan-head {
-  padding: 6px 12px; font-size: 11px; color: var(--ink-4);
+  padding: 6px 12px; font-size: 11px; color: var(--ink-3);
   letter-spacing: .1em; background: var(--paper-2); border-bottom: 1px solid var(--rule);
 }
 .pan-row {
@@ -71,7 +71,7 @@ p { margin: 0 0 12px; }
 .pan-row .nj { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
 .pan-row .shiy b { font-family: var(--serif); }
 .pan-row .mark { font-family: var(--mono); color: var(--accent); text-align: center; }
-.kong { font-size: 10px; color: var(--ink-4); border: 1px solid var(--rule); padding: 0 3px; border-radius: 2px; margin-left: 3px; }
+.kong { font-size: 10px; color: var(--ink-3); border: 1px solid var(--rule); padding: 0 3px; border-radius: 2px; margin-left: 3px; }
 
 /* 爻：CSS 绘制，避免字体缺字。宽度固定，避免 1fr 把爻拉成横条 */
 .yao { display: flex; gap: 7px; height: 4px; width: 104px; }
@@ -98,13 +98,17 @@ p { margin: 0 0 12px; }
 .vref:hover { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* 单元行 */
+.unit-row { position: relative; }
 .unit {
   display: grid; grid-template-columns: 26px 1fr auto; gap: 12px;
   padding: 10px 12px 10px 8px; border-bottom: 1px solid #F1ECE1;
   border-left: 3px solid transparent; cursor: pointer; transition: background .14s;
+  color: inherit; text-decoration: none;
 }
-.unit:hover { background: var(--paper-2); border-left-color: var(--accent); }
-.unit .idx { font-family: var(--mono); font-size: 11px; color: var(--ink-4); padding-top: 3px; }
+.unit:hover, .unit:focus-visible { background: var(--paper-2); border-left-color: var(--accent); }
+.unit:focus-visible, .vol-card:focus-visible, .case-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.unit-video { margin: -4px 12px 8px 51px; }
+.unit .idx { font-family: var(--mono); font-size: 11px; color: var(--ink-3); padding-top: 3px; }
 .unit .t { font-size: 13px; font-weight: 500; }
 .unit .p {
   font-size: 12px; color: var(--ink-3); margin-top: 3px; line-height: 1.7;
@@ -141,11 +145,14 @@ p { margin: 0 0 12px; }
 .quiz-row { display: grid; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #EFEADF; }
 .quiz-row.right { border-left: 2px solid rgba(63, 125, 90, .55); }
 .quiz-row.wrong { border-left: 3px solid var(--bad); }
-.fb { font-size: 11px; color: var(--ink-2); line-height: 1.6; white-space: nowrap; overflow-x: auto; }
+.fb { font-size: 11px; color: var(--ink-2); line-height: 1.6; white-space: normal; overflow-wrap: anywhere; }
 .fb .x { color: var(--bad); font-weight: 600; margin-right: 4px; }
 .fb .ok { color: var(--good); }
 
 .case-shell { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start; }
+.case-item { display: block; padding: 10px 12px; border-left: 2px solid transparent; color: inherit; text-decoration: none; }
+.case-item:hover, .case-item.on { background: var(--paper-2); border-left-color: var(--accent); }
+.case-item-video { padding: 0 12px 8px; }
 .case-detail { display: grid; grid-template-columns: 40% 60%; gap: 32px; align-items: start; }
 @media (max-width: 1239px) {
   .case-shell, .case-detail { grid-template-columns: 1fr; }

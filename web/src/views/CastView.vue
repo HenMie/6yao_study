@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { NCard, NButton, NInput, NSelect, NRadioGroup, NRadioButton, useMessage } from 'naive-ui'
+import { NCard, NButton, NInput, NSelect, NRadioGroup, NRadioButton, NAlert, NProgress, useMessage } from 'naive-ui'
+import { useRouter } from 'vue-router'
 import { paipan, toss, toText } from '../core/paipan.js'
 import { makeQuiz } from '../core/quiz.js'
 import { addQuiz, quizStats, fullCorrectCount } from '../core/store.js'
@@ -8,6 +9,7 @@ import GuaPan from '../components/GuaPan.vue'
 import QuizPan from '../components/QuizPan.vue'
 
 const message = useMessage()
+const router = useRouter()
 const mode = ref('toss')
 const quizKind = ref('single')
 
@@ -19,6 +21,8 @@ const dateObj = computed(() => (dt.value ? new Date(dt.value) : new Date()))
 
 const yao = ref([null, null, null, null, null, null])
 const pan = ref(null)
+const tossProgress = computed(() => yao.value.filter(v => v !== null).length)
+const nextTossIndex = computed(() => yao.value.findIndex(v => v === null))
 
 const gz = computed(() => paipan([1, 1, 1, 1, 1, 1], dateObj.value).ganzhi)
 
@@ -79,13 +83,22 @@ function onGraded(rec) {
 
           <!-- 摇卦 -->
           <template v-if="mode === 'toss'">
-            <p class="tiny muted" style="margin-bottom:10px">三枚铜钱，背为阳、面为阴。自下而上摇六次。</p>
-            <div v-for="(v, i) in yao" :key="i" style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #EFEADF">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+              <p class="tiny muted" style="margin:0">三枚铜钱，自下而上摇六次。</p>
+              <span class="mono tiny" aria-live="polite">{{ tossProgress }}/6</span>
+            </div>
+            <n-progress type="line" :percentage="tossProgress / 6 * 100" :show-indicator="false" style="margin-bottom:10px" />
+            <div v-for="(v, i) in yao" :key="i" class="toss-row" :class="{ next: i === nextTossIndex }">
               <span class="tiny muted" style="width:38px">{{ ['初爻','二爻','三爻','四爻','五爻','上爻'][i] }}</span>
               <span class="mono tiny" :style="{ color: v === 0 || v === 3 ? 'var(--accent)' : 'var(--ink)' }">{{ v === null ? '—' : YAO_LABEL[v] }}</span>
               <span style="flex:1" />
-              <n-button size="tiny" quaternary @click="doToss(i)">摇</n-button>
+              <n-button size="tiny" :type="i === nextTossIndex ? 'primary' : 'tertiary'" @click="doToss(i)">{{ v === null ? '摇这一爻' : '重摇' }}</n-button>
             </div>
+            <n-alert v-if="tossProgress === 0" type="default" :bordered="false" style="margin-top:12px;font-size:12px">先摇初爻，完成一爻后继续下一爻。每一步都会保留在左侧记录中。</n-alert>
+            <n-alert v-else-if="tossProgress === 6" type="success" :bordered="false" style="margin-top:12px;font-size:12px">
+              六爻已完成，右侧卦盘已生成。可以先查看卦盘，再进入断卦走查。
+              <n-button size="tiny" quaternary @click="router.push('/walk')">去断卦走查 →</n-button>
+            </n-alert>
             <div style="display:flex;gap:8px;margin-top:12px">
               <n-button size="small" quaternary @click="tossAll">连摇六次</n-button>
               <n-button size="small" quaternary @click="clearAll">清空</n-button>
@@ -151,7 +164,7 @@ function onGraded(rec) {
           <template #header-extra>
             <span class="tiny mono muted">{{ pan ? pan.ben.name + (pan.bian ? ' 之 ' + pan.bian.name : '') : '' }}</span>
           </template>
-          <div v-if="!pan" style="padding:32px;text-align:center" class="muted tiny">还没有起卦。点左边的「摇一爻」，或切到判卷练一次。</div>
+          <div v-if="!pan" style="padding:32px;text-align:center" class="muted tiny">还没有起卦。先在左侧完成六次逐爻操作，卦盘会在第六爻完成后自动生成。</div>
           <template v-else>
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
               <strong class="serif" style="font-size:17px">{{ pan.ben.name }}</strong>
@@ -185,5 +198,13 @@ function onGraded(rec) {
 </template>
 
 <style scoped>
+.toss-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #EFEADF;
+}
+.toss-row.next { background: var(--accent-wash); }
 @media (max-width: 1239px) { .cast-grid { grid-template-columns: 1fr !important; } }
 </style>

@@ -227,7 +227,7 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
 .qp-bar {
   display: flex; align-items: center; justify-content: space-between;
   background: var(--paper-2); padding: 8px 12px; margin-bottom: 12px;
-  border-left: 2px solid var(--primary);
+  border-left: 2px solid var(--accent);
 }
 .qp-bar-l { font-size: 13px; }
 .qp-given { font-size: 12px; color: var(--ink-2); margin-bottom: 10px; }
@@ -244,11 +244,11 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
 
 .qp-head, .qp-row {
   display: grid; align-items: center; gap: 6px;
-  padding: 5px 8px; border-bottom: 1px solid var(--line);
+  padding: 5px 8px; border-bottom: 1px solid var(--rule);
   font-size: 13px;
 }
-.qp-head { font-size: 11px; color: var(--ink-4); letter-spacing: .1em; border-bottom: 1px solid var(--line-3); }
-.qp-row.is-target { background: var(--paper-2); border-right: 2px solid var(--primary); }
+.qp-head { font-size: 11px; color: var(--ink-3); letter-spacing: .1em; border-bottom: 1px solid var(--rule-2); }
+.qp-row.is-target { background: var(--paper-2); border-right: 2px solid var(--accent); }
 .qp-row.st-wrong { border-left: 3px solid var(--bad); padding-left: 5px; }
 .qp-row.st-right { animation: fadeGood .8s ease-out forwards; }
 .c-pos { font-size: 12px; color: var(--ink-3); text-align: center; }
@@ -259,8 +259,8 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
 
 .fb-line {
   font-size: 13px; color: var(--ink-2); line-height: 1.7;
-  padding: 4px 0 4px 8px; border-left: 2px solid var(--accent-line);
-  margin: 2px 0 2px 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  padding: 4px 0 4px 8px; border-left: 2px solid var(--accent);
+  margin: 2px 0 2px 8px; white-space: normal; overflow-wrap: anywhere;
 }
 .fb-line .x { color: var(--bad); font-family: var(--mono); margin-right: 6px; }
 .qp-fushen { margin-top: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }

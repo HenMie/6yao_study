@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T00:00:00+08:00",
+  "title": "Design System: 六爻研习社",
+  "extensions": {
+    "breakpoints": [
+      { "name": "desktop-supported-minimum", "value": "1240px" },
+      { "name": "reference-capture", "value": "1440×900" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Naive UI primary action using the site's cinnabar accent.",
+      "html": "<button class=\"ds-button-primary\">继续学习</button>",
+      "css": ".ds-button-primary { min-height: 34px; padding: 0 16px; border: 1px solid #A6331F; border-radius: 2px; background: #A6331F; color: #FBF9F4; font: 500 14px/1.4 'Source Han Sans SC', sans-serif; } .ds-button-primary:hover { background: #8F2B1A; border-color: #8F2B1A; } .ds-button-primary:focus-visible { outline: 2px solid #C9BFA9; outline-offset: 2px; }"
+    },
+    {
+      "name": "Outlined Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Quiet desktop form field with a paper surface and restrained border.",
+      "html": "<input class=\"ds-input\" aria-label=\"搜索\" placeholder=\"搜索知识卡\" />",
+      "css": ".ds-input { height: 40px; width: 100%; padding: 0 12px; border: 1px solid #C9BFA9; border-radius: 2px; background: #FFFFFF; color: #16191C; font: 400 14px/1.5 'Source Han Sans SC', sans-serif; } .ds-input:focus-visible { border-color: #A6331F; outline: 2px solid #F3E4DE; outline-offset: 1px; }"
+    },
+    {
+      "name": "Paper Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat white content surface separated from the paper canvas by a fine border.",
+      "html": "<section class=\"ds-card\"><h3>学习单元</h3><p>查看内容与练习进度。</p></section>",
+      "css": ".ds-card { padding: 16px; border: 1px solid #DED6C4; border-radius: 2px; background: #FFFFFF; color: #16191C; } .ds-card h3 { margin: 0 0 8px; font: 600 17px/1.5 'Source Han Serif SC', serif; } .ds-card p { margin: 0; color: #3D4348; font: 400 14px/1.8 'Source Han Sans SC', sans-serif; }"
+    },
+    {
+      "name": "Top Navigation Item",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Text-led navigation with a cinnabar underline for the active route.",
+      "html": "<a class=\"ds-nav-item is-active\" href=\"#path\">学习路径</a>",
+      "css": ".ds-nav-item { position: relative; display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border-radius: 2px; color: #3D4348; text-decoration: none; font: 400 13px/1.5 'Source Han Sans SC', sans-serif; } .ds-nav-item:hover { background: #F4F0E6; } .ds-nav-item:focus-visible { outline: 2px solid #C9BFA9; outline-offset: 1px; } .ds-nav-item.is-active { color: #16191C; font-weight: 600; } .ds-nav-item.is-active::after { position: absolute; right: 14px; bottom: 0; left: 14px; height: 2px; background: #A6331F; content: ''; }"
+    },
+    {
+      "name": "Video Reference",
+      "kind": "custom",
+      "refersTo": "video-reference",
+      "description": "Source link for a course segment, kept visually distinct from glossary terms.",
+      "html": "<a class=\"ds-video-reference\" href=\"#video\">▸ P05 08:12</a>",
+      "css": ".ds-video-reference { color: #3D4348; border-bottom: 1px solid rgba(163, 63, 44, .55); text-decoration: none; font: 400 12px/1.6 'JetBrains Mono', monospace; white-space: nowrap; } .ds-video-reference:hover { color: #A6331F; border-bottom-color: #A6331F; } .ds-video-reference:focus-visible { outline: 2px solid #C9BFA9; outline-offset: 2px; }"
+    },
+    {
+      "name": "Quiz Error Row",
+      "kind": "custom",
+      "refersTo": "quiz-feedback",
+      "description": "Per-field error feedback marked by a cinnabar edge and explanatory text.",
+      "html": "<div class=\"ds-quiz-error\"><strong>納甲</strong><span>應为巳（兑纳丁巳卯丑）</span></div>",
+      "css": ".ds-quiz-error { display: flex; gap: 8px; padding: 6px 10px; border-left: 3px solid #A6331F; background: #FFFFFF; color: #A6331F; font: 400 13px/1.7 'Source Han Sans SC', sans-serif; } .ds-quiz-error strong { font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "带排盘附录的学术校勘本",
+    "overview": "六爻研习社以温暖纸色和克制的书刊排印呈现《增删卜易》精读与练习。宋体用于章节和古籍内容，黑体用于操作文字，等宽字用于编号、时间与数据。朱砂是当前主要交互强调色，细边框和留白承担页面分组。",
+    "keyCharacteristics": [
+      "Warm paper canvas, dark ink, and fine divider lines.",
+      "Serif editorial headings paired with sans-serif controls and mono metadata.",
+      "Cinnabar is the primary interaction accent; rounded corners stay at 2px.",
+      "Designed and verified for desktop CSS viewports at least 1240px wide."
+    ],
+    "rules": [
+      { "name": "Desktop Scope", "body": "The supported design target starts at 1240 CSS pixels; mobile and tablet layouts are outside the acceptance scope.", "section": "layout" },
+      { "name": "Paper and Ink", "body": "Use the existing paper, white surface, ink, and rule tokens as defined in DESIGN.md; do not reintroduce the retired indigo palette.", "section": "colors" }
+    ],
+    "dos": [
+      "Do keep labels and data values compact and align them with mono typography.",
+      "Do express status with text, symbols, or borders as well as color."
+    ],
+    "donts": [
+      "Don't claim mobile or tablet support.",
+      "Don't use decorative ink-wash, scroll, cloud, compass, or bagua watermark imagery."
+    ]
+  }
+}

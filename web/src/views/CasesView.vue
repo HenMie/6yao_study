@@ -37,20 +37,23 @@ const p = computed(() => {
     <div class="page-head">
       <div class="kicker">Cases</div>
       <h1>案例库</h1>
-      <p class="lede">每张示例卦只练一两个规则。卦盘由排盘引擎按爻复算，解读是按课程规则作的推演，不是古籍原文。</p>
+      <p class="lede">{{ CASES.length }} 则案例：课程卦例概要与本站练习示例分别标注。卦盘按爻复算，结合原片定位读作用链。</p>
     </div>
 
     <div class="case-shell">
       <div>
-        <div
-          v-for="c in CASES" :key="c.id"
-          style="padding:10px 12px;cursor:pointer;border-left:2px solid transparent"
-          :style="c.id === cur.id ? 'background:var(--paper-2);border-left-color:var(--accent)' : ''"
-          @click="router.push('/cases/' + c.id)"
-        >
-          <div class="mono tiny muted"><VideoRef :vid="c.src" /></div>
-          <div style="font-size:13px;font-weight:500">{{ c.title }}</div>
-          <div class="tiny muted">{{ c.focus }}</div>
+        <div v-for="c in CASES" :key="c.id" class="case-entry">
+          <router-link
+            class="case-item"
+            :class="{ on: c.id === cur.id }"
+            :to="'/cases/' + c.id"
+            :aria-current="c.id === cur.id ? 'page' : undefined"
+            :aria-label="`${c.title}，${c.focus}${c.id === cur.id ? '，当前案例' : ''}`"
+          >
+            <div style="font-size:13px;font-weight:500">{{ c.title }}</div>
+            <div class="tiny muted">{{ c.focus }}</div>
+          </router-link>
+          <div class="case-item-video"><VideoRef :vid="c.src" :t="c.t" /></div>
         </div>
       </div>
 
@@ -76,20 +79,20 @@ const p = computed(() => {
           <p class="muted" style="font-size:14px;margin-top:4px">{{ cur.q }}</p>
           <span class="seal plain" style="margin:10px 0 18px;display:inline-block">{{ cur.focus }}</span>
 
-          <div class="tiny muted" style="letter-spacing:.12em;margin-bottom:6px">示例解读</div>
+          <div class="tiny muted" style="letter-spacing:.12em;margin-bottom:6px">{{ cur.origin === 'course' ? '课程卦例 · 本站概要' : '本站练习示例' }}</div>
           <p style="font-size:15px;line-height:1.95">{{ cur.an }}</p>
 
           <div style="height:1px;background:var(--rule);margin:16px 0" />
           <n-alert type="default" :bordered="false" style="font-size:12px">
-            此卦为按课程规则构造的示例，用于演示判读路径；不是《增删卜易》原文，也不是课件板书摘录。
+            {{ cur.origin === 'course' ? '本卦按原片画面核对，解读为本站概要转述；视频定位可查原盘与上下文。' : '本卦为本站构造的规则练习，视频回链用于复习规则，不表示原片包含此卦。' }}
           </n-alert>
 
           <div style="display:flex;gap:10px;margin-top:16px">
             <n-button size="small" quaternary @click="router.push('/walk')">用走查器走一遍 →</n-button>
-            <n-button size="small" quaternary @click="router.push('/manual')">去手册看这一章</n-button>
+            <n-button size="small" quaternary @click="router.push('/manual/' + (cur.unit || ({k1:'c14', k2:'c21', k3:'c24', k4:'c34', k5:'c13'}[cur.id])))">去手册看这一章</n-button>
           </div>
           <div class="mono tiny muted" style="margin-top:14px">
-            出自 <VideoRef :vid="cur.src" /> · {{ cur.zhang }}
+            {{ cur.origin === 'course' ? '原片定位' : '规则复习' }} <VideoRef :vid="cur.src" :t="cur.t" /> · {{ cur.zhang }}
           </div>
         </div>
       </div>
