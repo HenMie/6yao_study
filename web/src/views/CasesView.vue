@@ -50,7 +50,7 @@ const p = computed(() => {
             :aria-current="c.id === cur.id ? 'page' : undefined"
             :aria-label="`${c.title}，${c.focus}${c.id === cur.id ? '，当前案例' : ''}`"
           >
-            <div style="font-size:13px;font-weight:500">{{ c.title }}</div>
+            <div style="font-size:14px;font-weight:500">{{ c.title }}</div>
             <div class="tiny muted">{{ c.focus }}</div>
           </router-link>
           <div class="case-item-video"><VideoRef :vid="c.src" :t="c.t" /></div>
@@ -76,14 +76,14 @@ const p = computed(() => {
 
         <div>
           <h2 style="font-size:22px">{{ cur.title }}</h2>
-          <p class="muted" style="font-size:14px;margin-top:4px">{{ cur.q }}</p>
+          <p class="muted" style="font-size:15px;margin-top:4px">{{ cur.q }}</p>
           <span class="seal plain" style="margin:10px 0 18px;display:inline-block">{{ cur.focus }}</span>
 
           <div class="tiny muted" style="letter-spacing:.12em;margin-bottom:6px">{{ cur.origin === 'course' ? '课程卦例 · 本站概要' : '本站练习示例' }}</div>
-          <p style="font-size:15px;line-height:1.95">{{ cur.an }}</p>
+          <p style="font-size:16px;line-height:1.95">{{ cur.an }}</p>
 
           <div style="height:1px;background:var(--rule);margin:16px 0" />
-          <n-alert type="default" :bordered="false" style="font-size:12px">
+          <n-alert type="default" :bordered="false" style="font-size:14px">
             {{ cur.origin === 'course' ? '本卦按原片画面核对，解读为本站概要转述；视频定位可查原盘与上下文。' : '本卦为本站构造的规则练习，视频回链用于复习规则，不表示原片包含此卦。' }}
           </n-alert>
 

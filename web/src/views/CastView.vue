@@ -94,8 +94,8 @@ function onGraded(rec) {
               <span style="flex:1" />
               <n-button size="tiny" :type="i === nextTossIndex ? 'primary' : 'tertiary'" @click="doToss(i)">{{ v === null ? '摇这一爻' : '重摇' }}</n-button>
             </div>
-            <n-alert v-if="tossProgress === 0" type="default" :bordered="false" style="margin-top:12px;font-size:12px">先摇初爻，完成一爻后继续下一爻。每一步都会保留在左侧记录中。</n-alert>
-            <n-alert v-else-if="tossProgress === 6" type="success" :bordered="false" style="margin-top:12px;font-size:12px">
+            <n-alert v-if="tossProgress === 0" type="default" :bordered="false" style="margin-top:12px;font-size:14px">先摇初爻，完成一爻后继续下一爻。每一步都会保留在左侧记录中。</n-alert>
+            <n-alert v-else-if="tossProgress === 6" type="success" :bordered="false" style="margin-top:12px;font-size:14px">
               六爻已完成，右侧卦盘已生成。可以先查看卦盘，再进入断卦走查。
               <n-button size="tiny" quaternary @click="router.push('/walk')">去断卦走查 →</n-button>
             </n-alert>
@@ -133,11 +133,11 @@ function onGraded(rec) {
             </n-radio-group>
             <n-alert
               v-if="quizKind === 'single'" type="default" :bordered="false"
-              style="margin-bottom:12px;font-size:12px"
+              style="margin-bottom:12px;font-size:14px"
             >
               只考一爻。要填的字段整列隐藏——否则同列五个已知，第六个能靠排除法抄出来。
             </n-alert>
-            <n-alert v-else type="default" :bordered="false" style="margin-bottom:12px;font-size:12px">
+            <n-alert v-else type="default" :bordered="false" style="margin-bottom:12px;font-size:14px">
               整卦 34~45 格，约 15~30 分钟。预填随档位收缩，完整档全部自己装。
             </n-alert>
             <p class="tiny muted">当前档位：<b>{{ lvLabel }}</b></p>

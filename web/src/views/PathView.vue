@@ -34,7 +34,7 @@ const quizTimes = computed(() => state.value.quiz.length)
     <n-card style="margin-bottom:24px;border-top:2px solid var(--accent)">
       <div class="kicker">§{{ String(units.findIndex(u => u.id === next.id) + 1).padStart(2, '0') }} · 当前单元</div>
       <h2 style="font-size:26px;margin:8px 0">{{ next.t }}</h2>
-      <p style="color:var(--ink-2);font-size:14px;max-width:56ch">{{ next.p }}</p>
+      <p style="color:var(--ink-2);font-size:15px;max-width:56ch">{{ next.p }}</p>
       <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
         <span class="mono tiny muted">{{ state.last ? '上次停在 ' + state.last : '尚未开始' }}　·　{{ next.volTitle }}</span>
         <span style="flex:1" />

@@ -62,23 +62,23 @@ const noOf = (i) => CN[i] || String(i + 1)
 
 .cb-h {
   font-family: var(--serif);
-  font-size: 17px; font-weight: 600; line-height: 1.4;
+  font-size: 18px; font-weight: 600; line-height: 1.45;
   letter-spacing: .02em; color: var(--ink);
   display: flex; align-items: baseline; gap: 10px;
   margin-bottom: 10px;
 }
 .cb-no {
   font-family: var(--mono);
-  font-size: 12px; font-weight: 400; color: var(--accent);
+  font-size: 13px; font-weight: 400; color: var(--accent);
   flex: none; transform: translateY(-1px);
 }
 
-.cb-p { font-size: 15px; line-height: 1.9; color: var(--ink-2); margin: 0 0 10px; }
+.cb-p { font-size: 16px; line-height: 1.92; color: var(--ink-2); margin: 0 0 11px; }
 
 .cb-ul { margin: 0 0 10px; padding: 0; list-style: none; }
 .cb-ul li {
   position: relative; padding: 0 0 6px 18px;
-  font-size: 14.5px; line-height: 1.85; color: var(--ink-2);
+  font-size: 15px; line-height: 1.88; color: var(--ink-2);
 }
 .cb-ul li::before {
   content: ''; position: absolute; left: 0; top: .85em;
@@ -99,12 +99,12 @@ const noOf = (i) => CN[i] || String(i + 1)
 .cb-tbl { width: 100%; border-collapse: collapse; margin: 4px 0 12px; }
 .cb-tbl th {
   text-align: left; font-weight: 500;
-  font-size: 11px; letter-spacing: .1em; color: var(--ink-3);
+  font-size: 12px; letter-spacing: .08em; color: var(--ink-3);
   background: var(--paper-2);
   padding: 7px 12px; border-bottom: 1px solid var(--rule-2);
 }
 .cb-tbl td {
-  font-size: 13.5px; line-height: 1.7; color: var(--ink-2);
+  font-size: 14.5px; line-height: 1.78; color: var(--ink-2);
   padding: 8px 12px; border-bottom: 1px solid var(--rule);
 }
 .cb-tbl tr:last-child td { border-bottom: 0; }
@@ -115,17 +115,17 @@ const noOf = (i) => CN[i] || String(i + 1)
   padding: 2px 0 2px 14px; margin: 8px 0 6px;
 }
 .cb-warn-tag {
-  font-family: var(--mono); font-size: 11px;
+  font-family: var(--mono); font-size: 12px;
   letter-spacing: .18em; color: var(--accent);
   margin-bottom: 6px;
 }
 .cb-warn ul { margin: 0; padding: 0; list-style: none; }
 .cb-warn li {
   position: relative; padding: 0 0 6px 16px;
-  font-size: 14px; line-height: 1.8; color: var(--ink-2);
+  font-size: 15px; line-height: 1.85; color: var(--ink-2);
 }
 .cb-warn li::before {
   content: '×'; position: absolute; left: 0; top: 0;
-  font-family: var(--mono); font-size: 12px; color: var(--accent);
+  font-family: var(--mono); font-size: 13px; color: var(--accent);
 }
 </style>

@@ -45,8 +45,8 @@ export const themeOverrides = {
     inputColor: 'transparent',
     borderRadius: '2px',
     borderRadiusSmall: '2px',
-    fontSize: '14px',
-    fontSizeSmall: '13px',
+    fontSize: '15px',
+    fontSizeSmall: '14px',
     fontFamily:
       '"Source Han Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei",-apple-system,sans-serif',
     fontFamilyMono: '"JetBrains Mono","Cascadia Mono",Consolas,ui-monospace,monospace',
@@ -75,7 +75,7 @@ export const themeOverrides = {
     borderRadius: '2px',
     borderColor: tokens.rule,
     color: '#FFFFFF',
-    titleFontSizeMedium: '13px',
+    titleFontSizeMedium: '15px',
     titleFontWeight: '500'
   },
   Input: {
@@ -106,7 +106,7 @@ export const themeOverrides = {
   Tag: {
     borderRadius: '2px',
     heightSmall: '20px',
-    fontSizeSmall: '12px'
+    fontSizeSmall: '13px'
   },
   Progress: {
     railColor: tokens.paper3,
@@ -114,13 +114,13 @@ export const themeOverrides = {
     height: '3px'
   },
   Tabs: {
-    tabFontSizeMedium: '13px',
+    tabFontSizeMedium: '14px',
     tabTextColorActiveLine: tokens.ink,
     barColor: tokens.accent,
     tabTextColorLine: tokens.ink3
   },
   Collapse: {
-    titleFontSize: '14px',
+    titleFontSize: '15px',
     titlePadding: '12px 16px',
     itemMargin: '0',
     borderRadius: '2px'

@@ -60,7 +60,7 @@ const nav = [
 .brand-txt { font-family: var(--serif); font-size: 17px; font-weight: 600; letter-spacing: .06em; }
 .nav { display: flex; gap: 2px; flex: 1; }
 .nav a {
-  padding: 6px 14px; border-radius: 2px; color: var(--ink-2); font-size: 13px;
+  padding: 6px 14px; border-radius: 2px; color: var(--ink-2); font-size: 14px;
   letter-spacing: .04em; text-decoration: none; position: relative;
 }
 .nav a:hover { background: var(--paper-2); }
@@ -69,10 +69,10 @@ const nav = [
   content: ''; position: absolute; left: 14px; right: 14px; bottom: -19px;
   height: 2px; background: var(--accent);
 }
-.topbar-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.topbar-meta { font-family: var(--mono); font-size: 13px; color: var(--ink-3); white-space: nowrap; }
 .footer {
   max-width: 1160px; margin: 0 auto; padding: 24px 24px 0;
-  border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-3);
+  border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-3);
 }
 .footer p { max-width: 72ch; }
 @media (max-width: 1239px) {

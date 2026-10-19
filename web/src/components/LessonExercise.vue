@@ -32,13 +32,13 @@ function choose(index) { selected.value = index; checked.value = false }
 h3 { font-size: 17px; margin: 8px 0 14px; }
 fieldset { border: 0; padding: 0; margin: 0 0 16px; min-width: 0; }
 legend { margin-bottom: 8px; }
-label { display: flex; align-items: baseline; gap: 10px; border-left: 2px solid transparent; padding: 8px 10px; cursor: pointer; font-size: 14px; }
+label { display: flex; align-items: baseline; gap: 10px; border-left: 2px solid transparent; padding: 8px 10px; cursor: pointer; font-size: 15px; }
 label.chosen { border-left-color: var(--ink); }
 input { accent-color: var(--ink); }
-.check-answer { background: var(--paper); border: 1px solid var(--rule-2); padding: 7px 14px; font: inherit; font-size: 13px; color: var(--ink); cursor: pointer; }
+.check-answer { background: var(--paper); border: 1px solid var(--rule-2); padding: 7px 14px; font: inherit; font-size: 14px; color: var(--ink); cursor: pointer; }
 .check-answer:disabled { color: var(--ink-3); cursor: default; }
 .check-answer:focus-visible, input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.lesson-feedback { margin-top: 18px; padding-left: 14px; border-left: 3px solid var(--bad); font-size: 14px; line-height: 1.85; }
+.lesson-feedback { margin-top: 18px; padding-left: 14px; border-left: 3px solid var(--bad); font-size: 15px; line-height: 1.88; }
 .lesson-feedback strong { color: var(--bad); font-weight: 500; }
 .lesson-feedback.correct { border-color: var(--good); }
 .lesson-feedback.correct strong { color: var(--good); }

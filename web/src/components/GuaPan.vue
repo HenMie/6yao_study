@@ -18,7 +18,7 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
     </div>
     <div v-for="y in rows" :key="y.pos" class="pan-row" :class="{ 'is-shi': y.shi }">
       <div class="shen">{{ y.shen }}</div>
-      <div>{{ y.qin }}<span class="muted" style="font-size:12px;margin-left:2px">{{ y.wx }}</span></div>
+      <div>{{ y.qin }}<span class="muted" style="font-size:13px;margin-left:2px">{{ y.wx }}</span></div>
       <div class="nj">{{ y.gan }}{{ y.zhi }}{{ y.yy }}</div>
       <div>
         <div class="yao" :class="y.yang ? 'yang' : 'yin'"><i /><i v-if="!y.yang" /></div>
@@ -32,7 +32,7 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
 
     <div v-if="showBian && p.bian" class="pan-row" style="background:var(--paper-2)">
       <div class="shen">变卦</div>
-      <div style="grid-column:span 4;font-size:12px;color:var(--ink-3)">
+      <div style="grid-column:span 4;font-size:13px;color:var(--ink-3)">
         {{ p.bian.name }}　
         <span v-for="y in p.yao.filter(x => x.bian)" :key="y.pos">
           {{ ['初','二','三','四','五','上'][y.pos-1] }}爻→{{ y.bian.qin }}{{ y.bian.zhi }}　

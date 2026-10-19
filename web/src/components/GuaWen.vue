@@ -70,26 +70,26 @@ const wenYan = computed(() => rec.value ? (trad.value ? rec.value.wenYan : rec.v
 <style scoped>
 .guawen { border-top: 1px solid var(--rule); padding: 14px 12px 10px; }
 .gw-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
-.gw-title { font-family: var(--serif); font-size: 14px; color: var(--ink); }
+.gw-title { font-family: var(--serif); font-size: 15px; color: var(--ink); }
 .gw-toggle {
-  margin-left: auto; font-size: 11px; padding: 2px 8px; cursor: pointer;
+  margin-left: auto; font-size: 12px; padding: 3px 8px; cursor: pointer;
   border: 1px solid var(--rule); background: var(--paper-2); color: var(--ink-3); border-radius: 2px;
 }
 .gw-toggle:hover { color: var(--accent); border-color: var(--accent); }
-.gw-guaci { margin: 0 0 10px; font-family: var(--serif); font-size: 14px; line-height: 1.8; color: var(--ink); }
+.gw-guaci { margin: 0 0 10px; font-family: var(--serif); font-size: 15px; line-height: 1.9; color: var(--ink); }
 .gw-yao { border-left: 2px solid var(--paper-3); padding-left: 10px; }
-.gw-line { display: flex; gap: 10px; line-height: 1.9; font-size: 13px; }
+.gw-line { display: flex; gap: 10px; line-height: 1.95; font-size: 14px; }
 .gw-line.is-dong .gw-text { color: var(--accent); }
 .gw-pos { flex: 0 0 2em; font-family: var(--serif); color: var(--ink-3); }
 .gw-line.is-dong .gw-pos { color: var(--accent); font-weight: 600; }
 .gw-text { color: var(--ink-2); }
-.gw-note { font-style: normal; font-size: 11px; color: var(--ink-4); }
+.gw-note { font-style: normal; font-size: 12px; color: var(--ink-4); }
 .gw-more {
-  margin-top: 10px; font-size: 11px; color: var(--ink-3); background: none;
+  margin-top: 10px; font-size: 12px; color: var(--ink-3); background: none;
   border: none; cursor: pointer; padding: 0; letter-spacing: .05em;
 }
 .gw-more:hover { color: var(--accent); }
-.gw-zhuan { margin-top: 8px; padding: 10px 12px; background: var(--paper-2); font-size: 12.5px; line-height: 1.9; }
+.gw-zhuan { margin-top: 8px; padding: 10px 12px; background: var(--paper-2); font-size: 14px; line-height: 1.9; }
 .gw-zhuan p { margin: 4px 0; color: var(--ink-2); }
 .gw-zhuan b { font-family: var(--serif); color: var(--ink-3); margin-right: 4px; }
 </style>

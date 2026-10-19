@@ -34,7 +34,7 @@ const titleOf = (c) => c.mt || c.t
           :style="c.id === cur.id ? 'background:var(--paper-2);border-left:2px solid var(--accent)' : 'border-left:2px solid transparent'"
         >
           <span class="mono tiny muted" style="width:44px;flex:none">{{ c.label }}</span>
-          <span style="font-size:13px" :style="{ color: c.id === cur.id ? 'var(--ink)' : 'var(--ink-2)' }">{{ titleOf(c) }}</span>
+          <span style="font-size:14px" :style="{ color: c.id === cur.id ? 'var(--ink)' : 'var(--ink-2)' }">{{ titleOf(c) }}</span>
         </a>
       </div>
 
@@ -46,7 +46,7 @@ const titleOf = (c) => c.mt || c.t
         <p class="serif" style="font-size:16px;line-height:1.9">{{ cur.p }}</p>
         <div style="height:1px;background:var(--rule);margin:16px 0" />
         <div class="tiny muted" style="letter-spacing:.12em;margin-bottom:8px">本章抓手</div>
-        <ul style="font-size:14px;line-height:1.9;padding-left:18px;color:var(--ink-2)">
+        <ul style="font-size:15px;line-height:1.9;padding-left:18px;color:var(--ink-2)">
           <li v-for="k in cur.keys" :key="k">{{ k }}</li>
         </ul>
         <ContentBlocks :blocks="cur.d" />
@@ -54,14 +54,14 @@ const titleOf = (c) => c.mt || c.t
         <p class="tiny muted" style="margin-top:20px">本站依课件画面整理转述，演算与自测为本站编写。附章沿用课件顺序，不为重号擅补章次。时间戳指画面核对点，不代表章节起点。</p>
 
         <div style="margin-top:28px;height:56px;background:var(--paper-2);border-radius:2px;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
-          <span style="font-size:13px;color:var(--ink-2)">这一章可以这样练</span>
+          <span style="font-size:14px;color:var(--ink-2)">这一章可以这样练</span>
           <n-button size="small" quaternary @click="router.push('/cast')">装卦台试一次 →</n-button>
         </div>
 
         <div style="display:flex;justify-content:space-between;margin-top:24px">
-          <router-link v-if="idx > 0" :to="'/manual/' + chs[idx - 1].id" style="font-size:13px">← {{ titleOf(chs[idx - 1]) }}</router-link>
+          <router-link v-if="idx > 0" :to="'/manual/' + chs[idx - 1].id" style="font-size:14px">← {{ titleOf(chs[idx - 1]) }}</router-link>
           <span v-else />
-          <router-link v-if="idx < chs.length - 1" :to="'/manual/' + chs[idx + 1].id" style="font-size:13px">{{ titleOf(chs[idx + 1]) }} →</router-link>
+          <router-link v-if="idx < chs.length - 1" :to="'/manual/' + chs[idx + 1].id" style="font-size:14px">{{ titleOf(chs[idx + 1]) }} →</router-link>
         </div>
       </div>
     </div>

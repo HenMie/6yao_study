@@ -101,7 +101,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
                 >
                   <span :style="{
                     width: '16px', height: '16px', border: '1px solid var(--rule-2)', borderRadius: '2px',
-                    display: 'grid', placeItems: 'center', fontSize: '11px',
+                    display: 'grid', placeItems: 'center', fontSize: '12px',
                     background: spec[item] ? 'var(--accent)' : 'transparent',
                     color: 'var(--paper)'
                   }">{{ spec[item] ? '✓' : '' }}</span>
@@ -111,7 +111,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
             </div>
           </div>
 
-          <div v-if="s.warn" style="margin-top:12px;font-size:12px;color:var(--accent);background:var(--accent-wash);padding:6px 10px;border-radius:2px;border-left:2px solid var(--accent)">
+          <div v-if="s.warn" style="margin-top:12px;font-size:14px;color:var(--accent);background:var(--accent-wash);padding:6px 10px;border-radius:2px;border-left:2px solid var(--accent)">
             {{ s.warn }}
           </div>
           <div class="mono tiny" style="color:var(--ink-4);margin-top:10px">
@@ -134,11 +134,11 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
           <div v-else>
             <div v-for="s in STEPS" :key="s.n">
               <div v-if="s.list && specList.length" style="padding:8px 0;border-bottom:1px dashed var(--rule)">
-                <div style="font-size:13px"><span class="tiny muted">0{{ s.n }} </span>特殊项：{{ specList.join('、') }}</div>
+                <div style="font-size:14px"><span class="tiny muted">0{{ s.n }} </span>特殊项：{{ specList.join('、') }}</div>
                 <div class="mono tiny" style="color:var(--ink-4)">据 {{ s.zhang }}</div>
               </div>
               <div v-else-if="ans[s.n]" style="padding:8px 0;border-bottom:1px dashed var(--rule)">
-                <div style="font-size:13px"><span class="tiny muted">0{{ s.n }} </span>{{ s.t }}：<b>{{ ans[s.n] }}</b></div>
+                <div style="font-size:14px"><span class="tiny muted">0{{ s.n }} </span>{{ s.t }}：<b>{{ ans[s.n] }}</b></div>
                 <div class="mono tiny" style="color:var(--ink-4)">据 {{ s.zhang }} · <VideoRef :vid="s.src" /></div>
               </div>
             </div>

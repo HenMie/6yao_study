@@ -25,9 +25,9 @@ typography:
     letterSpacing: "0.02em"
   body:
     fontFamily: "Source Han Sans SC, Noto Sans SC, PingFang SC, Microsoft YaHei, -apple-system, sans-serif"
-    fontSize: "15px"
+    fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.8
+    lineHeight: 1.78
   label:
     fontFamily: "JetBrains Mono, Cascadia Mono, Consolas, ui-monospace, monospace"
     fontSize: "11px"
@@ -112,10 +112,10 @@ components:
 
 - **页面标题**（600，28px，行高 1.5）：页面 h1。
 - **章节标题**（600，20px，行高 1.5）：默认 h2；页面可按内容使用 22–26px 局部标题。
-- **正文**（400，15px，行高 1.8）：全局基础文字。
-- **正文强调 / 古籍内容**：常用 15–17px serif，行高约 1.8–2.05。
-- **操作文字**：组件库默认 14px；局部按钮和卡片操作随实际密度使用 12–13px。
-- **标签与元信息**：常用 11–13px mono 或 sans；kicker 为 11px mono，字距 `.18em`。
+- **正文**（400，16px，行高约 1.78）：全局基础文字，保证长段阅读的清晰度。
+- **正文强调 / 古籍内容**：常用 16–18px serif，行高约 1.85–2.05。
+- **操作文字**：组件库默认 15px；局部按钮和卡片操作随实际密度使用 13–14px。
+- **标签与元信息**：常用 12–14px mono 或 sans；kicker 为 12px mono，字距 `.16em`。
 
 ## Layout
 
@@ -157,7 +157,7 @@ components:
 
 ### Navigation
 
-顶栏采用纸色半透明背景、轻微背景模糊和下边框。品牌文字使用 17px serif/600；导航文字 13px，默认次墨，悬停出现次纸底，当前路由以暖墨加朱砂底线标示。右侧显示课程说明，不放头像或账号控件。
+顶栏采用纸色半透明背景、轻微背景模糊和下边框。品牌文字使用 17px serif/600；导航文字 14px，默认次墨，悬停出现次纸底，当前路由以暖墨加朱砂底线标示。右侧显示课程说明，不放头像或账号控件。
 
 ### Buttons and Inputs
 

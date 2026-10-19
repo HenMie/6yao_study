@@ -229,36 +229,36 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
   background: var(--paper-2); padding: 8px 12px; margin-bottom: 12px;
   border-left: 2px solid var(--accent);
 }
-.qp-bar-l { font-size: 13px; }
-.qp-given { font-size: 12px; color: var(--ink-2); margin-bottom: 10px; }
+.qp-bar-l { font-size: 14px; }
+.qp-given { font-size: 13px; color: var(--ink-2); margin-bottom: 10px; }
 .qp-global { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 4px; }
 .qp-gitem { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.qp-glabel { font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+.qp-glabel { font-size: 13px; color: var(--ink-3); white-space: nowrap; }
 .qp-glabel.bad { color: var(--bad); }
 .gst-wrong { border-left: 3px solid var(--bad); padding-left: 5px; }
 .gst-right { animation: fadeGood .8s ease-out forwards; }
 @keyframes fadeGood { from { box-shadow: inset 2px 0 0 var(--good); } to { box-shadow: inset 2px 0 0 transparent; } }
-.qp-val { font-size: 13px; color: var(--ink); }
+.qp-val { font-size: 14px; color: var(--ink); }
 .qp-val.is-reveal { color: var(--ink-3); }
-.qp-ans { font-size: 11px; color: var(--ink-3); }
+.qp-ans { font-size: 12px; color: var(--ink-3); }
 
 .qp-head, .qp-row {
   display: grid; align-items: center; gap: 6px;
   padding: 5px 8px; border-bottom: 1px solid var(--rule);
-  font-size: 13px;
+  font-size: 14px;
 }
-.qp-head { font-size: 11px; color: var(--ink-3); letter-spacing: .1em; border-bottom: 1px solid var(--rule-2); }
+.qp-head { font-size: 12px; color: var(--ink-3); letter-spacing: .08em; border-bottom: 1px solid var(--rule-2); }
 .qp-row.is-target { background: var(--paper-2); border-right: 2px solid var(--accent); }
 .qp-row.st-wrong { border-left: 3px solid var(--bad); padding-left: 5px; }
 .qp-row.st-right { animation: fadeGood .8s ease-out forwards; }
-.c-pos { font-size: 12px; color: var(--ink-3); text-align: center; }
-.c-src { font-size: 11px; color: var(--ink-3); }
+.c-pos { font-size: 13px; color: var(--ink-3); text-align: center; }
+.c-src { font-size: 12px; color: var(--ink-3); }
 .cell { min-width: 0; }
-.pre { font-size: 13px; font-weight: 600; color: var(--ink-3); cursor: default; }
+.pre { font-size: 14px; font-weight: 600; color: var(--ink-3); cursor: default; }
 .dot { color: var(--ink-4); }
 
 .fb-line {
-  font-size: 13px; color: var(--ink-2); line-height: 1.7;
+  font-size: 14px; color: var(--ink-2); line-height: 1.78;
   padding: 4px 0 4px 8px; border-left: 2px solid var(--accent);
   margin: 2px 0 2px 8px; white-space: normal; overflow-wrap: anywhere;
 }

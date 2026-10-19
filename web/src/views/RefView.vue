@@ -26,7 +26,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
           <n-card v-for="c in filtered(g)" :key="c.q" size="small">
             <div class="tiny" style="color:var(--accent);letter-spacing:.12em">{{ c.g }}</div>
-            <div class="serif" style="font-size:15px;font-weight:600;margin:2px 0 6px">{{ c.q }}</div>
+            <div class="serif" style="font-size:16px;font-weight:600;margin:2px 0 6px">{{ c.q }}</div>
             <div class="tiny" style="color:var(--ink-2);line-height:1.75">{{ c.a }}</div>
             <div style="margin-top:8px"><VideoRef :vid="c.s" /></div>
           </n-card>
@@ -57,7 +57,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
       </n-card>
 
       <n-card size="small" title="生旺墓绝">
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
           <thead><tr><th align="left">五行</th><th align="left">长生</th><th align="left">帝旺</th><th align="left">墓</th><th align="left">绝</th></tr></thead>
           <tbody>
             <tr v-for="m in TABLES.mu" :key="m.wx">
@@ -68,13 +68,13 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
       </n-card>
 
       <n-card size="small" title="旬空">
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tbody><tr v-for="m in TABLES.xunkong" :key="m.xun"><td class="mono">{{ m.xun }}</td><td class="mono">{{ m.kong }}</td></tr></tbody>
         </table>
       </n-card>
 
       <n-card size="small" title="六神起法">
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tbody>
             <tr><td>甲 乙</td><td>青龙</td></tr><tr><td>丙 丁</td><td>朱雀</td></tr>
             <tr><td>戊</td><td>勾陈</td></tr><tr><td>己</td><td>螣蛇</td></tr>
@@ -85,7 +85,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
       </n-card>
 
       <n-card size="small" title="八宫世应">
-        <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <table style="width:100%;border-collapse:collapse;font-size:14px">
           <tbody>
             <tr><td>本宫卦</td><td>世六 / 应三</td></tr><tr><td>一世</td><td>世初 / 应四</td></tr>
             <tr><td>二世</td><td>世二 / 应五</td></tr><tr><td>三世</td><td>世三 / 应六</td></tr>

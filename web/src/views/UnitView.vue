@@ -93,16 +93,16 @@ const u = computed(() => units.value[i.value])
   margin-bottom: 10px;
 }
 .sec-label {
-  font-family: var(--mono); font-size: 11px;
+  font-family: var(--mono); font-size: 12px;
   letter-spacing: .18em; color: var(--ink-3);
   margin-bottom: 8px;
 }
-.brief-p { font-size: 15px; line-height: 1.9; color: var(--ink); margin: 0; }
+.brief-p { font-size: 16px; line-height: 1.92; color: var(--ink); margin: 0; }
 .brief-rule { height: 1px; background: var(--rule-2); margin: 14px 0; }
 .keys { margin: 0; padding: 0; list-style: none; }
 .keys li {
   position: relative; padding: 0 0 5px 18px;
-  font-size: 14px; line-height: 1.8; color: var(--ink-2);
+  font-size: 15px; line-height: 1.85; color: var(--ink-2);
 }
 .keys li::before {
   content: ''; position: absolute; left: 0; top: .9em;
@@ -117,7 +117,7 @@ const u = computed(() => units.value[i.value])
   background: var(--paper-2); border-radius: 2px;
   margin-top: 26px;
 }
-.drill-t { font-size: 13px; color: var(--ink-2); flex: none; }
+.drill-t { font-size: 14px; color: var(--ink-2); flex: none; }
 .drill-links { display: flex; gap: 2px; flex-wrap: wrap; }
 
 .note { margin-top: 14px; line-height: 1.7; }
@@ -135,7 +135,7 @@ const u = computed(() => units.value[i.value])
 .fn-link { text-decoration: none; max-width: 46%; display: flex; flex-direction: column; gap: 2px; }
 .fn-next { text-align: right; margin-left: auto; }
 .fn-t {
-  font-family: var(--serif); font-size: 14px; color: var(--ink);
+  font-family: var(--serif); font-size: 15px; color: var(--ink);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .fn-link:hover .fn-t { color: var(--accent); }
