@@ -38,7 +38,7 @@ const titleOf = (c) => c.mt || c.t
         </a>
       </div>
 
-      <div style="max-width:68ch">
+      <div class="manual-body" style="max-width:68ch">
         <div class="mono tiny muted" style="letter-spacing:.1em">{{ cur.label }} · {{ cur.volTitle }}</div>
         <h2 style="font-size:26px;margin:6px 0 4px">{{ titleOf(cur) }}</h2>
         <div class="mono tiny muted" style="margin-bottom:20px">对应 <VideoRef :vid="cur.vol" :t="STAMPS[cur.id]" /></div>
@@ -69,6 +69,14 @@ const titleOf = (c) => c.mt || c.t
 </template>
 
 <style scoped>
+/* 手册正文保持 68ch 阅读宽度；图示允许借右侧栏宽，避免 SVG 缩得过小 */
+.manual-body :deep(.dia) {
+  width: calc(100% + 120px);
+  max-width: 720px;
+}
+@media (max-width: 900px) {
+  .manual-body :deep(.dia) { width: 100%; }
+}
 @media (max-width: 1239px) {
   .manual-grid { grid-template-columns: 1fr !important; }
   .manual-grid > :first-child { position: static !important; max-height: none !important; display: flex; gap: 4px; overflow-x: auto !important; padding-bottom: 8px; }

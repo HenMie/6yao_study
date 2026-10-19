@@ -1,11 +1,13 @@
 <script setup>
 /* ============================================================
  * ContentBlocks  分节讲解块渲染器
- * 渲染 data.js 章节的 d: 数组。块类型：ps / ul / verse / tbl / warn
+ * 渲染 data.js 章节的 d: 数组。块类型：ps / ul / verse / tbl / warn / dia
  * 版式遵循 DESIGN.md：宋体小节标题 + 汉字编号、口诀 serif 引文块
  * （朱砂左标线）、小对照表 1px 纸格、易错点朱砂标记块。
+ * dia 为自绘图示块，由 DiagramBlock 按 type 分发。
  * ============================================================ */
 import { computed } from 'vue'
+import DiagramBlock from './DiagramBlock.vue'
 
 const props = defineProps({
   blocks: { type: Array, default: () => [] }
@@ -23,6 +25,8 @@ const noOf = (i) => CN[i] || String(i + 1)
         <span class="cb-no">{{ noOf(i) }}</span>
         <span>{{ b.h }}</span>
       </h3>
+
+      <DiagramBlock v-if="b.dia" :spec="b.dia" />
 
       <p v-for="(p, j) in (b.ps || [])" :key="'p' + j" class="cb-p">{{ p }}</p>
 

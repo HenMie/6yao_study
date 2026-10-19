@@ -16,6 +16,11 @@ try {
     await page.goto(`${base}/#/unit/${unit.id}`, { waitUntil: 'networkidle' })
     assert.equal(await page.locator('.cb').count(), unit.d.length, `${unit.id} content blocks`)
     assert.equal(await page.locator('.lesson-exercise').count(), 1, `${unit.id} exercise`)
+    const expectedDias = unit.d.filter(block => block.dia).length
+    assert.ok(expectedDias > 0, `${unit.id} has at least one diagram`)
+    assert.equal(await page.locator('.dia').count(), expectedDias, `${unit.id} diagrams`)
+    const flatDias = await page.locator('.dia-body').evaluateAll(nodes => nodes.filter(node => node.getBoundingClientRect().height < 40).length)
+    assert.equal(flatDias, 0, `${unit.id} diagrams have height`)
     const answer = unit.exercise.answer
     const wrong = (answer + 1) % unit.exercise.options.length
     await page.locator('input[type=radio]').nth(wrong).check()
