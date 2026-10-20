@@ -23,7 +23,7 @@ npm run build
 
 ## 部署到 Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/HenMie/6yao_study)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/import?s=https%3A%2F%2Fgithub.com%2FHenMie%2F6yao_study)
 
 仓库根目录的 `vercel.json` 已配置好：
 
@@ -32,6 +32,8 @@ npm run build
 - 输出：`web/dist`
 
 导入仓库后直接 Deploy 即可，不需要手动改 Root Directory，也不需要环境变量。hash 路由不需要 rewrite。
+
+> 请用 **Import Git Repository** 直接导入本仓库，不要走 Clone 模板流程——Clone 会在你的账号下新建一个副本仓库，之后 push 原仓库不会触发部署。
 
 ## 内容说明
 
