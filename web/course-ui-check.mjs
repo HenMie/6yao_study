@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { chromium } from 'playwright-core'
-import { VOLS, MANUAL_CHAPTERS, STAMPS } from './src/content/data.js'
+import { VOLS, MANUAL_CHAPTERS } from './src/content/data.js'
 
 const base = process.env.COURSE_BASE || 'http://127.0.0.1:4173'
 const browser = await chromium.launch({ channel: 'msedge', headless: true })
@@ -11,7 +11,6 @@ page.on('console', message => { if (message.type() === 'error') errors.push(`con
 page.on('response', response => { if (response.status() >= 400) errors.push(`http ${response.status()}: ${response.url()}`) })
 
 try {
-  let checkedVideos = 0
   for (const volume of VOLS) for (const unit of volume.chapters) {
     await page.goto(`${base}/#/unit/${unit.id}`, { waitUntil: 'networkidle' })
     assert.equal(await page.locator('.cb').count(), unit.d.length, `${unit.id} content blocks`)
@@ -29,17 +28,6 @@ try {
     await page.locator('input[type=radio]').nth(answer).check()
     await page.getByRole('button', { name: '核对答案与解析' }).click()
     assert.ok((await page.locator('.lesson-feedback.correct').innerText()).includes(unit.exercise.explanation), `${unit.id} correct feedback`)
-
-    if (checkedVideos < 8) {
-      await page.locator('.vref').first().click()
-      await page.waitForFunction(() => document.querySelector('video')?.readyState >= 1)
-      const video = await page.locator('video').evaluate(element => ({ duration: element.duration, time: element.currentTime }))
-      assert.ok(video.duration > STAMPS[unit.id], `${unit.id} video duration`)
-      assert.ok(Math.abs(video.time - STAMPS[unit.id]) < 10, `${unit.id} video seek ${video.time}`)
-      checkedVideos += 1
-      await page.keyboard.press('Escape')
-      await page.locator('video').waitFor({ state: 'detached' })
-    }
   }
 
   await page.goto(`${base}/#/manual/c22`, { waitUntil: 'networkidle' })
@@ -55,7 +43,7 @@ try {
   assert.equal(await page.locator('.lesson-feedback').count(), 0, 'feedback state reset')
 
   assert.deepEqual(errors, [])
-  console.log(`PASS: 34 units, 23 manual entries, ${checkedVideos} video streams, exercise feedback/reset, no runtime or HTTP errors`)
+  console.log(`PASS: 34 units, 23 manual entries, exercise feedback/reset, no runtime or HTTP errors`)
 } finally {
   await browser.close()
 }

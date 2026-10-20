@@ -2,9 +2,8 @@
 import { ref, computed } from 'vue'
 import { NCard, NButton, NProgress, NTag } from 'naive-ui'
 import { useRouter } from 'vue-router'
-import { VOLS, STAMPS } from '../content/data'
+import { VOLS } from '../content/data'
 import { state, isDone } from '../core/store'
-import VideoRef from '../components/VideoRef.vue'
 
 const router = useRouter()
 
@@ -16,6 +15,10 @@ const units = computed(() => {
 const doneN = computed(() => units.value.filter(u => isDone(u.id)).length)
 const pct = computed(() => Math.round(doneN.value / units.value.length * 100))
 const next = computed(() => units.value.find(u => !isDone(u.id)) || units.value[units.value.length - 1])
+/* 卡片摘要按句读断开：句号、分号各自成行，避免在“六阴支”“排到上爻”这类词中间折行 */
+const nextSentences = computed(() =>
+  (next.value.p.match(/[^。；]+[。；]?/g) || []).map(s => s.trim()).filter(Boolean)
+)
 
 const openVol = ref(next.value.vol)
 const curVol = computed(() => VOLS.find(v => v.id === openVol.value) || VOLS[0])
@@ -28,13 +31,14 @@ const quizTimes = computed(() => state.value.quiz.length)
     <div class="page-head">
       <div class="kicker">Study Path</div>
       <h1>学习路径</h1>
-      <p class="lede">8 集视频，约 5 小时，整理为 {{ units.length }} 个学习单元。每节有规则讲解、自测解析与原片画面定位；按自己的节奏逐项练习。</p>
     </div>
 
     <n-card style="margin-bottom:24px;border-top:2px solid var(--accent)">
       <div class="kicker">§{{ String(units.findIndex(u => u.id === next.id) + 1).padStart(2, '0') }} · 当前单元</div>
       <h2 style="font-size:26px;margin:8px 0">{{ next.t }}</h2>
-      <p style="color:var(--ink-2);font-size:15px;max-width:56ch">{{ next.p }}</p>
+      <div class="cur-sum">
+        <p v-for="(s, i) in nextSentences" :key="i">{{ s }}</p>
+      </div>
       <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
         <span class="mono tiny muted">{{ state.last ? '上次停在 ' + state.last : '尚未开始' }}　·　{{ next.volTitle }}</span>
         <span style="flex:1" />
@@ -72,7 +76,7 @@ const quizTimes = computed(() => state.value.quiz.length)
       >
         <div class="vc-top">
           <span class="vol-no">{{ v.vol }}</span>
-          <span class="mono tiny muted">{{ v.dur }} · {{ v.chapters.length }} 单元</span>
+          <span class="mono tiny muted">{{ v.chapters.length }} 单元</span>
           <span style="flex:1" />
           <span v-if="v.id === next.vol" class="seal">在这里</span>
         </div>
@@ -86,9 +90,9 @@ const quizTimes = computed(() => state.value.quiz.length)
       </div>
     </div>
 
-    <n-card v-if="openVol" :id="`vol-${curVol.id}`" style="margin-top:24px" :title="`P${curVol.vol} · ${curVol.title}`">
+    <n-card v-if="openVol" :id="`vol-${curVol.id}`" style="margin-top:24px" :title="`卷${['一', '二', '三', '四', '五', '六', '七', '八'][curVol.vol - 1]} · ${curVol.title}`">
       <template #header-extra>
-        <span class="tiny muted">{{ curVol.chapters.length }} 个单元　<VideoRef :vid="curVol.id" /></span>
+        <span class="tiny muted">{{ curVol.chapters.length }} 个单元</span>
       </template>
       <div
         v-for="(c, i) in curVol.chapters" :key="c.id"
@@ -103,8 +107,19 @@ const quizTimes = computed(() => state.value.quiz.length)
           </div>
           <div class="tiny muted">{{ isDone(c.id) ? '已学' : '未学' }}</div>
         </router-link>
-        <div class="unit-video"><VideoRef :vid="curVol.id" :t="STAMPS[c.id]" /></div>
       </div>
     </n-card>
   </div>
 </template>
+
+<style scoped>
+/* 当前单元摘要：按句成行，使用卡片整宽；text-wrap:pretty 收掉句末孤字 */
+.cur-sum { margin: 0 0 4px; }
+.cur-sum p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.9;
+  text-wrap: pretty;
+}
+</style>

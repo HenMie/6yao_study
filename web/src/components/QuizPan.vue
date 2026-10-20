@@ -3,7 +3,6 @@
 import { ref, watch, computed } from 'vue'
 import { NButton, NSelect } from 'naive-ui'
 import { grade } from '../core/quiz.js'
-import VideoRef from './VideoRef.vue'
 
 const props = defineProps({
   quiz: { type: Object, required: true },
@@ -121,7 +120,6 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
     <div v-for="s in globalSlots" :key="'ge' + s.id">
       <div v-if="errText(s)" class="fb-line">
         <span class="x">×</span>{{ errText(s).replace(/^× /, '') }}
-        <VideoRef :vid="s.vid" style="margin-left:8px" />
       </div>
     </div>
 
@@ -190,7 +188,6 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
       <template v-for="f in ['nj', 'wx', 'qin', 'shen', 'dong', 'bianZhi', 'bianQin']" :key="f + r.i">
         <div v-if="errText(slotOf(f, r.i))" class="fb-line">
           <span class="x">×</span>{{ errText(slotOf(f, r.i)).replace(/^× /, '') }}
-          <VideoRef :vid="slotOf(f, r.i).vid" style="margin-left:8px" />
         </div>
       </template>
     </template>
@@ -210,7 +207,6 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
       <div v-for="s in fushenSlots" :key="'fe' + s.id">
         <div v-if="errText(s)" class="fb-line">
           <span class="x">×</span>{{ errText(s).replace(/^× /, '') }}
-          <VideoRef :vid="s.vid" style="margin-left:8px" />
         </div>
       </div>
     </template>
@@ -218,7 +214,7 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
     <!-- 动作 -->
     <div style="display:flex;gap:10px;margin-top:14px;align-items:center">
       <n-button size="small" type="primary" :disabled="checked" @click="gradeNow">判卷</n-button>
-      <span class="tiny muted">没填的格子不计错，只记未作答。错因后的 ▸ 可回看对应讲解。</span>
+      <span class="tiny muted">没填的格子不计错，只记未作答。错因后附对应规则说明。</span>
     </div>
   </div>
 </template>

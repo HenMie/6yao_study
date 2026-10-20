@@ -17,7 +17,7 @@ console.log('汇总条:', bar.replace(/\s+/g, ' '))
 const cols1 = await page.locator('.qp-head div').allInnerTexts()
 console.log('L1 列:', cols1.join('|'))
 
-// 2. 填卦名判卷（故意填错 → 错因行 + 回链）
+// 2. 填卦名判卷（故意填错 → 错因行）
 const nameSel = page.locator('.qp-gitem .n-base-selection').first()
 await nameSel.click()
 await page.locator('.n-base-select-option').first().click()
@@ -26,7 +26,6 @@ await page.waitForTimeout(400)
 const fb = await page.locator('.fb-line').allInnerTexts()
 console.log('错因行数:', fb.length)
 if (fb.length) console.log('错因样例:', fb[0].replace(/\s+/g, ' ').slice(0, 90))
-console.log('错因带回链 ▸:', await page.locator('.fb-line .vref').count() > 0 ? '✅' : '❌')
 
 // 3. 看答案
 await page.getByRole('button', { name: '看答案' }).click()

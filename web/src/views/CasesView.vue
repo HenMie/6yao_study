@@ -5,7 +5,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { CASES } from '../content/data'
 import { paipan, GAN, ZHI } from '../core/paipan'
 import GuaPan from '../components/GuaPan.vue'
-import VideoRef from '../components/VideoRef.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -37,7 +36,7 @@ const p = computed(() => {
     <div class="page-head">
       <div class="kicker">Cases</div>
       <h1>案例库</h1>
-      <p class="lede">{{ CASES.length }} 则案例：课程卦例概要与本站练习示例分别标注。卦盘按爻复算，结合原片定位读作用链。</p>
+      <p class="lede">{{ CASES.length }} 则案例：课程卦例概要与本站练习示例分别标注。卦盘按爻复算，逐步读作用链。</p>
     </div>
 
     <div class="case-shell">
@@ -53,7 +52,6 @@ const p = computed(() => {
             <div style="font-size:14px;font-weight:500">{{ c.title }}</div>
             <div class="tiny muted">{{ c.focus }}</div>
           </router-link>
-          <div class="case-item-video"><VideoRef :vid="c.src" :t="c.t" /></div>
         </div>
       </div>
 
@@ -84,7 +82,7 @@ const p = computed(() => {
 
           <div style="height:1px;background:var(--rule);margin:16px 0" />
           <n-alert type="default" :bordered="false" style="font-size:14px">
-            {{ cur.origin === 'course' ? '本卦按原片画面核对，解读为本站概要转述；视频定位可查原盘与上下文。' : '本卦为本站构造的规则练习，视频回链用于复习规则，不表示原片包含此卦。' }}
+            {{ cur.origin === 'course' ? '课程卦例为本站概要转述，便于对照规则。' : '本卦为本站构造的规则练习，用于熟悉判定步骤。' }}
           </n-alert>
 
           <div style="display:flex;gap:10px;margin-top:16px">
@@ -92,7 +90,7 @@ const p = computed(() => {
             <n-button size="small" quaternary @click="router.push('/manual/' + (cur.unit || ({k1:'c14', k2:'c21', k3:'c24', k4:'c34', k5:'c13'}[cur.id])))">去手册看这一章</n-button>
           </div>
           <div class="mono tiny muted" style="margin-top:14px">
-            {{ cur.origin === 'course' ? '原片定位' : '规则复习' }} <VideoRef :vid="cur.src" :t="cur.t" /> · {{ cur.zhang }}
+            {{ cur.origin === 'course' ? '课程卦例' : '规则练习' }} · {{ cur.zhang }}
           </div>
         </div>
       </div>

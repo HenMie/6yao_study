@@ -72,8 +72,8 @@ export function makeQuiz(opts) {
 
   const slots = []
   let sid = 0
-  const push = (field, label, yao, answer, options, rule, vid, opts2) => {
-    slots.push({ id: 's' + (sid++), field, label, yao, answer, options, rule, vid, ...(opts2 || {}) })
+  const push = (field, label, yao, answer, options, rule, opts2) => {
+    slots.push({ id: 's' + (sid++), field, label, yao, answer, options, rule, ...(opts2 || {}) })
   }
 
   const dongList = yaoSrc.map(v => (v === 0 || v === 3))
@@ -87,13 +87,13 @@ export function makeQuiz(opts) {
     } else {
       target = Math.floor(Math.random() * 6)
     }
-    push('name', '卦名', null, p.ben.name, ALL_NAMES, `${p.ben.upper}上${p.ben.lower}下`, 'p02')
-    push('shi', '世爻', null, POS_ZH[p.shi - 1] + '爻', POS_ZH.map(z => z + '爻'), SHI_RULE[TYPE_LB.indexOf(p.ben.type)], 'p02')
-    push('ying', '应爻', null, POS_ZH[p.ying - 1] + '爻', POS_ZH.map(z => z + '爻'), '恒隔三位', 'p02')
+    push('name', '卦名', null, p.ben.name, ALL_NAMES, `${p.ben.upper}上${p.ben.lower}下`)
+    push('shi', '世爻', null, POS_ZH[p.shi - 1] + '爻', POS_ZH.map(z => z + '爻'), SHI_RULE[TYPE_LB.indexOf(p.ben.type)])
+    push('ying', '应爻', null, POS_ZH[p.ying - 1] + '爻', POS_ZH.map(z => z + '爻'), '恒隔三位')
     for (const f of L.singleYao) yaoSlot(push, p, yaoSrc, target, f, gz, dayGanIdx, xunName)
     if (lv >= 3 && dongList[target]) {
-      push('bianZhi', '变爻纳甲', target, p.yao[target].bian.zhi, ZHI, naJiaRule(p.bian.lower, target < 3), 'p02', { bian: true })
-      push('bianQin', '变爻六亲', target, p.yao[target].bian.qin, QINS, '六亲从本卦宫', 'p02', { bian: true })
+      push('bianZhi', '变爻纳甲', target, p.yao[target].bian.zhi, ZHI, naJiaRule(p.bian.lower, target < 3), { bian: true })
+      push('bianQin', '变爻六亲', target, p.yao[target].bian.qin, QINS, '六亲从本卦宫', { bian: true })
     }
     const hiddenCols = {}
     if (L.singleYao.includes('qin') || L.singleYao.includes('wx') || L.singleYao.includes('nj')) {
@@ -107,29 +107,29 @@ export function makeQuiz(opts) {
   }
 
   // 完整装一卦
-  push('name', '卦名', null, p.ben.name, ALL_NAMES, `${p.ben.upper}上${p.ben.lower}下`, 'p02')
-  push('shi', '世爻', null, POS_ZH[p.shi - 1] + '爻', POS_ZH.map(z => z + '爻'), SHI_RULE[TYPE_LB.indexOf(p.ben.type)], 'p02')
-  push('ying', '应爻', null, POS_ZH[p.ying - 1] + '爻', POS_ZH.map(z => z + '爻'), '恒隔三位', 'p02')
-  if (lv >= 2) push('bianName', '变卦', null, p.bian ? p.bian.name : '无动爻', ALL_NAMES.concat(['无动爻']), '阴阳反变', 'p02')
+  push('name', '卦名', null, p.ben.name, ALL_NAMES, `${p.ben.upper}上${p.ben.lower}下`)
+  push('shi', '世爻', null, POS_ZH[p.shi - 1] + '爻', POS_ZH.map(z => z + '爻'), SHI_RULE[TYPE_LB.indexOf(p.ben.type)])
+  push('ying', '应爻', null, POS_ZH[p.ying - 1] + '爻', POS_ZH.map(z => z + '爻'), '恒隔三位')
+  if (lv >= 2) push('bianName', '变卦', null, p.bian ? p.bian.name : '无动爻', ALL_NAMES.concat(['无动爻']), '阴阳反变')
   if (lv >= 3) {
-    push('gong', '卦宫', null, p.ben.gong + '宫', GONGS.map(g => g + '宫'), '上下卦组合归宫', 'p02')
-    push('xunkong', '旬空', null, gz.xunKong, XUN_PAIRS, `${xunName}旬空${gz.xunKong}`, 'p06')
-    push('yuejian', '月建', null, gz.monthZhi, ZHI, '月建以节气定', 'p05')
-    push('richen', '日辰', null, gz.day, allDayGZ(), '据起卦时间查历', 'p05')
+    push('gong', '卦宫', null, p.ben.gong + '宫', GONGS.map(g => g + '宫'), '上下卦组合归宫')
+    push('xunkong', '旬空', null, gz.xunKong, XUN_PAIRS, `${xunName}旬空${gz.xunKong}`)
+    push('yuejian', '月建', null, gz.monthZhi, ZHI, '月建以节气定')
+    push('richen', '日辰', null, gz.day, allDayGZ(), '据起卦时间查历')
   }
   for (const f of L.fullYao) for (let i = 0; i < 6; i++) yaoSlot(push, p, yaoSrc, i, f, gz, dayGanIdx, xunName)
   if (lv >= 3 && p.fuShen.length) {
     for (const f of p.fuShen) {
       const ans = `${f.qin}${f.zhi}伏${POS_ZH[f.pos - 1]}爻`
       const opts = p.fuShen.map(x => `${x.qin}${x.zhi}伏${POS_ZH[x.pos - 1]}爻`)
-      push('fushen', '伏神', f.pos - 1, ans, opts, '本宫同位', 'p02')
+      push('fushen', '伏神', f.pos - 1, ans, opts, '本宫同位')
     }
   }
   if (lv >= 3 && p.bian) {
     p.yao.forEach((y, i) => {
       if (!y.dong) return
-      push('bianZhi', '变爻纳甲', i, y.bian.zhi, ZHI, naJiaRule(p.bian.lower, i < 3), 'p02', { bian: true })
-      push('bianQin', '变爻六亲', i, y.bian.qin, QINS, '六亲从本卦宫', 'p02', { bian: true })
+      push('bianZhi', '变爻纳甲', i, y.bian.zhi, ZHI, naJiaRule(p.bian.lower, i < 3), { bian: true })
+      push('bianQin', '变爻六亲', i, y.bian.qin, QINS, '六亲从本卦宫', { bian: true })
     })
   }
   return { mode: 'full', lv, kind, date, p, yaoSrc, target: null, slots, hiddenCols: {}, prefilled: L.prefilled }
@@ -148,11 +148,11 @@ function allDayGZ() {
 function yaoSlot(push, p, yaoSrc, i, f, gz, dayGanIdx, xunName) {
   const y = p.yao[i]
   const posTxt = POS_ZH[i] + '爻'
-  if (f === 'nj') push('nj', '纳甲', i, y.zhi, ZHI, naJiaRule(i < 3 ? p.ben.lower : p.ben.upper, i < 3), 'p02', { posTxt })
-  else if (f === 'wx') push('wx', '五行', i, y.wx, WXS, '地支五行固定', 'p01', { posTxt })
-  else if (f === 'qin') push('qin', '六亲', i, y.qin, QINS, QIN_RULE[y.qin], 'p02', { posTxt })
-  else if (f === 'shen') push('shen', '六神', i, y.shen, SHENS, SHEN_START_TXT[SHEN_START_IDX[dayGanIdx]], 'p02', { posTxt })
-  else if (f === 'dong') push('dong', '动爻', i, yaoSrc[i] === 0 || yaoSrc[i] === 3 ? '动' : '静', ['动', '静'], DONG_RULE[yaoSrc[i]], 'p02', { posTxt })
+  if (f === 'nj') push('nj', '纳甲', i, y.zhi, ZHI, naJiaRule(i < 3 ? p.ben.lower : p.ben.upper, i < 3), { posTxt })
+  else if (f === 'wx') push('wx', '五行', i, y.wx, WXS, '地支五行固定', { posTxt })
+  else if (f === 'qin') push('qin', '六亲', i, y.qin, QINS, QIN_RULE[y.qin], { posTxt })
+  else if (f === 'shen') push('shen', '六神', i, y.shen, SHENS, SHEN_START_TXT[SHEN_START_IDX[dayGanIdx]], { posTxt })
+  else if (f === 'dong') push('dong', '动爻', i, yaoSrc[i] === 0 || yaoSrc[i] === 3 ? '动' : '静', ['动', '静'], DONG_RULE[yaoSrc[i]], { posTxt })
 }
 
 /* ---------- 判定与错因 ---------- */

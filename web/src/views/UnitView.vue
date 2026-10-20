@@ -2,9 +2,8 @@
 import { computed } from 'vue'
 import { NButton } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
-import { VOLS, STAMPS } from '../content/data'
+import { VOLS } from '../content/data'
 import { toggleDone, isDone } from '../core/store'
-import VideoRef from '../components/VideoRef.vue'
 import ContentBlocks from '../components/ContentBlocks.vue'
 import LessonExercise from '../components/LessonExercise.vue'
 
@@ -23,10 +22,9 @@ const u = computed(() => units.value[i.value])
 <template>
   <div class="wrap" style="max-width:820px">
     <div class="page-head">
-      <div class="kicker">§{{ String(i + 1).padStart(2, '0') }} · P{{ u.vol.slice(1) }} {{ u.volTitle }}</div>
+      <div class="kicker">§{{ String(i + 1).padStart(2, '0') }} · 卷{{ ['一', '二', '三', '四', '五', '六', '七', '八'][Number(u.vol.slice(1)) - 1] }} {{ u.volTitle }}</div>
       <h1>{{ u.t }}</h1>
-      <p class="lede" style="display:flex;gap:12px;align-items:center">
-        <VideoRef :vid="u.vol" :t="STAMPS[u.id]" />
+      <p class="lede">
         <span>单元 {{ i + 1 }} / {{ units.length }}</span>
       </p>
     </div>
@@ -58,7 +56,7 @@ const u = computed(() => units.value[i.value])
 
     <!-- 口径说明 -->
     <p class="tiny muted note">
-      规则说明依课程画面整理转述；演算与自测为本站编写，非板书逐字记录。视频时间为已核对的画面采样点，不代表章节起点；口述细节请回原片核对。
+      规则说明依课程内容整理转述；演算与自测为本站编写，非逐字记录。
     </p>
 
     <!-- 底部操作 -->

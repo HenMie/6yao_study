@@ -33,11 +33,6 @@ const nav = [
       </header>
 
       <router-view />
-
-      <footer class="footer">
-        <p>本站内容整理自《增删卜易》逐章精读课程，用于传统文化学习与研究。所有断语均为对古籍文本的解读演示，不构成任何现实决策建议；请勿用于医疗、投资、法律等专业判断。</p>
-        <p class="mono tiny" style="margin-top:8px">六爻研习社 · Vue 3 + Naive UI · v0.2</p>
-      </footer>
     </n-message-provider>
   </n-config-provider>
 </template>
@@ -70,11 +65,6 @@ const nav = [
   height: 2px; background: var(--accent);
 }
 .topbar-meta { font-family: var(--mono); font-size: 13px; color: var(--ink-3); white-space: nowrap; }
-.footer {
-  max-width: 1160px; margin: 0 auto; padding: 24px 24px 0;
-  border-top: 1px solid var(--rule); font-size: 13px; color: var(--ink-3);
-}
-.footer p { max-width: 72ch; }
 @media (max-width: 1239px) {
   .topbar-in { height: auto; flex-wrap: wrap; padding-bottom: 6px; gap: 12px; }
   .nav { order: 3; width: 100%; overflow-x: auto; }

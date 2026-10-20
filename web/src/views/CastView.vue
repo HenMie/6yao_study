@@ -69,7 +69,7 @@ function onGraded(rec) {
     <div class="page-head">
       <div class="kicker">Casting Table</div>
       <h1>装卦台</h1>
-      <p class="lede">摇卦或手动录入六爻，自动排出本卦、变卦、纳甲、六亲、六神、世应与旬空。也可以切到判卷，自己装一次再对答案——错因会告诉你该回看哪一段。</p>
+      <p class="lede">摇卦或手动录入六爻，自动排出本卦、变卦、纳甲、六亲、六神、世应与旬空。也可以切到判卷，自己装一次再对答案——错因会告诉你该回看哪条规则。</p>
     </div>
 
     <div style="display:grid;grid-template-columns:300px minmax(520px,1fr);gap:24px;align-items:start" class="cast-grid">

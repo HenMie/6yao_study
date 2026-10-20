@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { NCard, NInput, NTag } from 'naive-ui'
 import { CARDS, TABLES } from '../content/data'
-import VideoRef from '../components/VideoRef.vue'
 
 const q = ref('')
 const groups = computed(() => [...new Set(CARDS.map(c => c.g))])
@@ -15,7 +14,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
     <div class="page-head">
       <div class="kicker">Reference</div>
       <h1>速查</h1>
-      <p class="lede">{{ CARDS.length }} 张知识卡 + 对照表。断卦卡住的时候，先来这里查，不要回去翻视频。</p>
+      <p class="lede">{{ CARDS.length }} 张知识卡 + 对照表。断卦卡住的时候，先来这里查，不要回去翻课程。</p>
     </div>
 
     <n-input v-model:value="q" placeholder="搜：旬空 / 三合 / 世应 / 六神…" style="margin-bottom:20px" clearable />
@@ -28,7 +27,6 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
             <div class="tiny" style="color:var(--accent);letter-spacing:.12em">{{ c.g }}</div>
             <div class="serif" style="font-size:16px;font-weight:600;margin:2px 0 6px">{{ c.q }}</div>
             <div class="tiny" style="color:var(--ink-2);line-height:1.75">{{ c.a }}</div>
-            <div style="margin-top:8px"><VideoRef :vid="c.s" /></div>
           </n-card>
         </div>
       </template>

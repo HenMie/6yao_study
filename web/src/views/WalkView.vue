@@ -1,25 +1,24 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { NCard, NButton, NTag } from 'naive-ui'
-import VideoRef from '../components/VideoRef.vue'
 
 const STEPS = [
-  { n: 1, t: '取用神', src: 'p03', zhang: '用神章第九', ask: '你问的是什么事？先定哪一爻代表它。',
+  { n: 1, t: '取用神', zhang: '用神章第九', ask: '你问的是什么事？先定哪一爻代表它。',
     opts: [['问自身、运势、安危', '世爻'], ['问父母、长辈、文书、房子、车', '父母'], ['问钱财、工资、投资、女友', '妻财'], ['问工作、官职、疾病、丈夫', '官鬼'], ['问子女、晚辈、宠物、医药', '子孙'], ['问兄弟、朋友、同事、竞争者', '兄弟']],
     warn: '用神取错，后面全错。同一个卦问不同的事，用神完全不同。' },
-  { n: 2, t: '看旺衰', src: 'p05', zhang: '月将章第十六 · 日辰章第十七', ask: '用神此刻有力还是无力？力量来自月建、日辰和动爻。',
+  { n: 2, t: '看旺衰', zhang: '月将章第十六 · 日辰章第十七', ask: '用神此刻有力还是无力？力量来自月建、日辰和动爻。',
     opts: [['临月建 / 临日辰', '旺相'], ['得日月生扶', '得扶'], ['休囚，无人生扶', '无力'], ['逢旬空，须合旺衰', '空'], ['与月建相冲，须查救应', '月破']],
     warn: '旺衰不看爻本身，看日月和动爻给了它多少力量。' },
-  { n: 3, t: '看动爻', src: 'p05', zhang: '动静生克章第十四', ask: '卦里有哪几爻在动？它们对用神做了什么？',
+  { n: 3, t: '看动爻', zhang: '动静生克章第十四', ask: '卦里有哪几爻在动？它们对用神做了什么？',
     opts: [['有动爻生用神', '得生'], ['有动爻克用神', '受克'], ['动爻与用神相合', '被合'], ['无动爻（六爻安静）', '安静']],
     warn: '动爻优先级高于静爻，但静爻旺时一样能生克。' },
-  { n: 4, t: '看动变', src: 'p05', zhang: '动变生克冲合章第十五', ask: '动爻变出了什么？变爻只作用本位那个动爻。',
+  { n: 4, t: '看动变', zhang: '动变生克冲合章第十五', ask: '动爻变出了什么？变爻只作用本位那个动爻。',
     opts: [['化回头生', '得回头生'], ['化回头克', '受回头克'], ['化进神', '化进'], ['化退神', '化退'], ['化空 / 化破 / 化墓 / 化绝，须合旺衰', '状态待核'], ['反吟 / 伏吟', '反复或迟滞']],
     warn: '变爻不管别的爻，本位动爻也克不到变爻。' },
-  { n: 5, t: '查特殊', src: 'p06', zhang: '章十九 ~ 章廿六 · P06–P08', ask: '这些结构里，有哪些在这一卦出现了？勾上它们。',
+  { n: 5, t: '查特殊', zhang: '章十九 ~ 章廿六', ask: '这些结构里，有哪些在这一卦出现了？勾上它们。',
     list: ['旬空', '月破', '日破', '三合局', '六合', '六冲', '三刑', '伏神', '入墓'],
     warn: '特殊结构是加分项或减分项，不能单独定吉凶。' },
-  { n: 6, t: '定吉凶', src: 'p05', zhang: '克处逢生章第十三', ask: '把前面五步合起来，最终落在用神身上的是生还是克？',
+  { n: 6, t: '定吉凶', zhang: '克处逢生章第十三', ask: '把前面五步合起来，最终落在用神身上的是生还是克？',
     opts: [['用神有气，生扶有效', '有利'], ['用神衰弱，受克无救', '不利'], ['受克但得有效生扶', '有救，需合看'], ['生扶来源又受制', '救应受损，待核'], ['尚未查清旺衰与救应', '证据不足']],
     warn: '生克按作用对象与有效性分析，不数个数，也不凭叙述先后推出先吉后凶。' }
 ]
@@ -59,7 +58,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
     <div class="page-head">
       <div class="kicker">Decision Walk</div>
       <h1>断卦走查</h1>
-      <p class="lede">按课程教过的顺序走一遍：取用神 → 看旺衰 → 看动爻 → 看动变 → 查特殊 → 定吉凶 → 出结论。每一步都标了它出自哪一章、哪一集，结论可以倒查。</p>
+      <p class="lede">按课程教过的顺序走一遍：取用神 → 看旺衰 → 看动爻 → 看动变 → 查特殊 → 定吉凶 → 出结论。每一步都标了它出自哪一章，结论可以倒查。</p>
     </div>
 
     <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start" class="walk-grid">
@@ -115,7 +114,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
             {{ s.warn }}
           </div>
           <div class="mono tiny" style="color:var(--ink-4);margin-top:10px">
-            据 {{ s.zhang }} · <VideoRef :vid="s.src" />
+            据 {{ s.zhang }}
           </div>
         </n-card>
 
@@ -139,7 +138,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
               </div>
               <div v-else-if="ans[s.n]" style="padding:8px 0;border-bottom:1px dashed var(--rule)">
                 <div style="font-size:14px"><span class="tiny muted">0{{ s.n }} </span>{{ s.t }}：<b>{{ ans[s.n] }}</b></div>
-                <div class="mono tiny" style="color:var(--ink-4)">据 {{ s.zhang }} · <VideoRef :vid="s.src" /></div>
+                <div class="mono tiny" style="color:var(--ink-4)">据 {{ s.zhang }}</div>
               </div>
             </div>
             <div v-if="ans[6]" class="serif" style="margin-top:14px;font-size:15px">{{ draft }}</div>

@@ -140,13 +140,6 @@ p { margin: 0 0 12px; }
 }
 .seal.plain { transform: none; border-width: 1px; border-color: var(--rule-2); color: var(--ink-3); background: none; }
 
-/* 回视频：1px 实线 55% 朱砂，与术语点线区分 */
-.vref {
-  color: var(--ink-2); border-bottom: 1px solid rgba(163, 63, 44, .55);
-  text-decoration: none; font-family: var(--mono); font-size: 13px; white-space: nowrap;
-}
-.vref:hover { color: var(--accent); border-bottom-color: var(--accent); }
-
 /* 单元行 */
 .unit-row { position: relative; }
 .unit {
@@ -202,7 +195,6 @@ p { margin: 0 0 12px; }
 .case-shell { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: start; }
 .case-item { display: block; padding: 10px 12px; border-left: 2px solid transparent; color: inherit; text-decoration: none; }
 .case-item:hover, .case-item.on { background: var(--paper-2); border-left-color: var(--accent); }
-.case-item-video { padding: 0 12px 8px; }
 .case-detail { display: grid; grid-template-columns: 40% 60%; gap: 32px; align-items: start; }
 @media (max-width: 1239px) {
   .case-shell, .case-detail { grid-template-columns: 1fr; }

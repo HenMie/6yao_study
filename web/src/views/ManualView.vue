@@ -2,8 +2,7 @@
 import { computed } from 'vue'
 import { NButton } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
-import { MANUAL_CHAPTERS, STAMPS } from '../content/data'
-import VideoRef from '../components/VideoRef.vue'
+import { MANUAL_CHAPTERS } from '../content/data'
 import ContentBlocks from '../components/ContentBlocks.vue'
 import LessonExercise from '../components/LessonExercise.vue'
 
@@ -22,7 +21,7 @@ const titleOf = (c) => c.mt || c.t
     <div class="page-head">
       <div class="kicker">Manual</div>
       <h1>断卦手册</h1>
-      <p class="lede">{{ chs.length }} 个条目：18 章正文、四时旺相补章、3 篇附章与1篇导读。与学习单元共用完整讲解，可回看已核对的原片画面。</p>
+      <p class="lede">{{ chs.length }} 个条目：18 章正文、四时旺相补章、3 篇附章与1篇导读。与学习单元共用完整讲解，可逐章对照。</p>
     </div>
 
     <div style="display:grid;grid-template-columns:240px minmax(0,1fr);gap:32px;align-items:start" class="manual-grid">
@@ -40,8 +39,7 @@ const titleOf = (c) => c.mt || c.t
 
       <div class="manual-body" style="max-width:68ch">
         <div class="mono tiny muted" style="letter-spacing:.1em">{{ cur.label }} · {{ cur.volTitle }}</div>
-        <h2 style="font-size:26px;margin:6px 0 4px">{{ titleOf(cur) }}</h2>
-        <div class="mono tiny muted" style="margin-bottom:20px">对应 <VideoRef :vid="cur.vol" :t="STAMPS[cur.id]" /></div>
+        <h2 style="font-size:26px;margin:6px 0 20px">{{ titleOf(cur) }}</h2>
 
         <p class="serif" style="font-size:16px;line-height:1.9">{{ cur.p }}</p>
         <div style="height:1px;background:var(--rule);margin:16px 0" />
@@ -51,7 +49,7 @@ const titleOf = (c) => c.mt || c.t
         </ul>
         <ContentBlocks :blocks="cur.d" />
         <LessonExercise v-if="cur.exercise" :key="cur.id" :exercise="cur.exercise" />
-        <p class="tiny muted" style="margin-top:20px">本站依课件画面整理转述，演算与自测为本站编写。附章沿用课件顺序，不为重号擅补章次。时间戳指画面核对点，不代表章节起点。</p>
+        <p class="tiny muted" style="margin-top:20px">本站依课程内容整理转述，演算与自测为本站编写。附章沿用课程顺序，不为重号擅补章次。</p>
 
         <div style="margin-top:28px;height:56px;background:var(--paper-2);border-radius:2px;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
           <span style="font-size:14px;color:var(--ink-2)">这一章可以这样练</span>
