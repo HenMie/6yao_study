@@ -33,6 +33,15 @@ const nav = [
       </header>
 
       <router-view />
+
+      <footer class="site-foot">
+        <span class="site-foot-brand">六爻研习社</span>
+        <span class="site-foot-credit">
+          <span>作者 Chouann</span>
+          <span class="site-foot-sep">·</span>
+          <a href="https://github.com/HenMie/6yao_study" target="_blank" rel="noopener noreferrer">GitHub 项目</a>
+        </span>
+      </footer>
     </n-message-provider>
   </n-config-provider>
 </template>
@@ -65,6 +74,31 @@ const nav = [
   height: 2px; background: var(--accent);
 }
 .topbar-meta { font-family: var(--mono); font-size: 13px; color: var(--ink-3); white-space: nowrap; }
+
+.site-foot {
+  max-width: 1160px; margin: 0 auto;
+  padding: 18px 24px 30px;
+  border-top: 1px solid var(--rule);
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: .1em; color: var(--ink-4);
+}
+.site-foot-brand {
+  font-family: var(--serif); font-size: 12.5px;
+  letter-spacing: .12em; color: var(--ink-3);
+}
+.site-foot-credit { display: flex; align-items: baseline; gap: 7px; }
+.site-foot a {
+  color: var(--ink-3); text-decoration: none;
+  border-bottom: 1px solid var(--rule-2); padding-bottom: 1px;
+}
+.site-foot a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.site-foot-sep { color: var(--rule-2); }
+
+@media (max-width: 640px) {
+  .site-foot { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
 @media (max-width: 1239px) {
   .topbar-in { height: auto; flex-wrap: wrap; padding-bottom: 6px; gap: 12px; }
   .nav { order: 3; width: 100%; overflow-x: auto; }

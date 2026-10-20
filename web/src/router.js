@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { VOLS, MANUAL_CHAPTERS } from './content/data'
 
 import PathView from './views/PathView.vue'
 import UnitView from './views/UnitView.vue'
@@ -24,8 +25,23 @@ const router = createRouter({
   scrollBehavior() { return { top: 0 } }
 })
 
+const unitTitle = (id) => {
+  for (const v of VOLS) {
+    const c = v.chapters.find(x => x.id === id)
+    if (c) return c.t
+  }
+  return ''
+}
+const manualTitle = (id) => {
+  const c = MANUAL_CHAPTERS.find(x => x.id === id)
+  return c ? (c.mt || c.t) : ''
+}
+
 router.afterEach((to) => {
-  document.title = (to.meta.title ? to.meta.title + ' · ' : '') + '六爻研习社'
+  let title = to.meta.title
+  if (to.name === 'unit') title = unitTitle(to.params.id) || title
+  if (to.name === 'manual' && to.params.id) title = manualTitle(to.params.id) || title
+  document.title = (title ? title + ' · ' : '') + '六爻研习社'
 })
 
 export default router
