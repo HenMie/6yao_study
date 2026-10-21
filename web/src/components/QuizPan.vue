@@ -81,6 +81,11 @@ const rowCls = (i) => {
   return 'st-none'
 }
 const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: props.quiz.yaoSrc[i] })))
+
+/* ---- 手机卡片：与桌面表格共用 cols / slotOf，只是把"列"换成"每爻一张卡" ---- */
+const PRE_LABEL = { zhi: '纳甲', wx: '五行' }
+const FIELD_LABEL = { nj: '纳甲', wx: '五行', qin: '六亲', shen: '六神', dong: '动静' }
+
 </script>
 
 <template>
@@ -123,74 +128,178 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
       </div>
     </div>
 
-    <!-- 表头 -->
-    <div class="qp-head" :style="gridStyle">
-      <div v-for="c in cols" :key="c">{{ colTitle[c] }}</div>
-    </div>
+    <!-- 题面表格：手机上列宽不变，容器内横向滑动 -->
+    <div class="qp-scroll">
+      <div class="qp-inner">
+        <!-- 表头 -->
+        <div class="qp-head" :style="gridStyle">
+          <div v-for="c in cols" :key="c">{{ colTitle[c] }}</div>
+        </div>
 
-    <!-- 六爻行 -->
-    <template v-for="r in rows" :key="r.i">
-      <div class="qp-row" :class="[rowCls(r.i), { 'is-target': quiz.mode === 'single' && quiz.target === r.i }]" :style="gridStyle">
-        <div class="c-pos serif">{{ r.pos }}</div>
-        <div class="c-src mono">{{ SRC_LABEL[r.src] }}</div>
+        <!-- 六爻行 -->
+        <template v-for="r in rows" :key="r.i">
+          <div class="qp-row" :class="[rowCls(r.i), { 'is-target': quiz.mode === 'single' && quiz.target === r.i }]" :style="gridStyle">
+            <div class="c-pos serif">{{ r.pos }}</div>
+            <div class="c-src mono">{{ SRC_LABEL[r.src] }}</div>
 
-        <template v-for="c in cols.slice(2)" :key="c">
-          <!-- 预填（灰字给定，无边框） -->
-          <div v-if="c === 'zhi'" class="pre mono">{{ quiz.p.yao[r.i].zhi }}</div>
-          <div v-else-if="c === 'wx'" class="pre">{{ quiz.p.yao[r.i].wx }}</div>
+            <template v-for="c in cols.slice(2)" :key="c">
+              <!-- 预填（灰字给定，无边框） -->
+              <div v-if="c === 'zhi'" class="pre mono">{{ quiz.p.yao[r.i].zhi }}</div>
+              <div v-else-if="c === 'wx'" class="pre">{{ quiz.p.yao[r.i].wx }}</div>
 
-          <!-- 单爻：隐藏列画 · -->
-          <div v-else-if="c === 'qin' || c === 'ask'" class="cell">
-            <template v-if="(c === 'qin' && slotOf('qin', r.i))">
-              <n-select v-if="!checked && !reveal" :value="ans[slotOf('qin', r.i).id] || null" size="tiny" placeholder="—"
-                :options="slotOf('qin', r.i).options.map(o => ({ label: o, value: o }))"
-                @update:value="v => (ans[slotOf('qin', r.i).id] = v)" />
-              <span v-else class="qp-val" :class="{ 'is-reveal': reveal && !checked }">{{ ans[slotOf('qin', r.i).id] || '—' }}</span>
+              <!-- 单爻：隐藏列画 · -->
+              <div v-else-if="c === 'qin' || c === 'ask'" class="cell">
+                <template v-if="(c === 'qin' && slotOf('qin', r.i))">
+                  <n-select v-if="!checked && !reveal" :value="ans[slotOf('qin', r.i).id] || null" size="tiny" placeholder="—"
+                    :options="slotOf('qin', r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[slotOf('qin', r.i).id] = v)" />
+                  <span v-else class="qp-val" :class="{ 'is-reveal': reveal && !checked }">{{ ans[slotOf('qin', r.i).id] || '—' }}</span>
+                </template>
+                <template v-else-if="c === 'ask' && askSlotOf(r.i)">
+                  <n-select v-if="!checked && !reveal" :value="ans[askSlotOf(r.i).id] || null" size="tiny" placeholder="—"
+                    :options="askSlotOf(r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[askSlotOf(r.i).id] = v)" />
+                  <span v-else class="qp-val" :class="{ 'is-reveal': reveal && !checked }">{{ ans[askSlotOf(r.i).id] || '—' }}</span>
+                </template>
+                <span v-else class="dot">·</span>
+              </div>
+
+              <!-- 完整模式各列 -->
+              <div v-else-if="c === 'nj' || c === 'wx' || c === 'qin' || c === 'shen' || c === 'dong'" class="cell">
+                <template v-if="slotOf(c, r.i)">
+                  <n-select v-if="!checked && !reveal" :value="ans[slotOf(c, r.i).id] || null" size="tiny" filterable placeholder="—"
+                    :options="slotOf(c, r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[slotOf(c, r.i).id] = v)" />
+                  <span v-else class="qp-val" :class="{ 'is-reveal': reveal && !checked }">{{ ans[slotOf(c, r.i).id] || '—' }}</span>
+                </template>
+                <span v-else class="dot">·</span>
+              </div>
+
+              <!-- 变爻列（L3，仅动爻行有格） -->
+              <div v-else-if="c === 'bian'" class="cell">
+                <template v-if="slotOf('bianZhi', r.i)">
+                  <n-select v-if="!checked && !reveal" :value="ans[slotOf('bianZhi', r.i).id] || null" size="tiny" filterable placeholder="变支"
+                    :options="slotOf('bianZhi', r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[slotOf('bianZhi', r.i).id] = v)" style="width:64px" />
+                  <span v-else class="qp-val">{{ ans[slotOf('bianZhi', r.i).id] || '—' }}</span>
+                  <n-select v-if="!checked && !reveal" :value="ans[slotOf('bianQin', r.i).id] || null" size="tiny" placeholder="变亲"
+                    :options="slotOf('bianQin', r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[slotOf('bianQin', r.i).id] = v)" style="width:76px;margin-left:4px" />
+                  <span v-else class="qp-val" style="margin-left:4px">{{ ans[slotOf('bianQin', r.i).id] || '—' }}</span>
+                </template>
+                <span v-else class="tiny muted">—</span>
+              </div>
             </template>
-            <template v-else-if="c === 'ask' && askSlotOf(r.i)">
-              <n-select v-if="!checked && !reveal" :value="ans[askSlotOf(r.i).id] || null" size="tiny" placeholder="—"
-                :options="askSlotOf(r.i).options.map(o => ({ label: o, value: o }))"
-                @update:value="v => (ans[askSlotOf(r.i).id] = v)" />
-              <span v-else class="qp-val" :class="{ 'is-reveal': reveal && !checked }">{{ ans[askSlotOf(r.i).id] || '—' }}</span>
-            </template>
-            <span v-else class="dot">·</span>
           </div>
 
-          <!-- 完整模式各列 -->
-          <div v-else-if="c === 'nj' || c === 'wx' || c === 'qin' || c === 'shen' || c === 'dong'" class="cell">
-            <template v-if="slotOf(c, r.i)">
-              <n-select v-if="!checked && !reveal" :value="ans[slotOf(c, r.i).id] || null" size="tiny" filterable placeholder="—"
-                :options="slotOf(c, r.i).options.map(o => ({ label: o, value: o }))"
-                @update:value="v => (ans[slotOf(c, r.i).id] = v)" />
-              <span v-else class="qp-val" :class="{ 'is-reveal': reveal && !checked }">{{ ans[slotOf(c, r.i).id] || '—' }}</span>
-            </template>
-            <span v-else class="dot">·</span>
-          </div>
-
-          <!-- 变爻列（L3，仅动爻行有格） -->
-          <div v-else-if="c === 'bian'" class="cell">
-            <template v-if="slotOf('bianZhi', r.i)">
-              <n-select v-if="!checked && !reveal" :value="ans[slotOf('bianZhi', r.i).id] || null" size="tiny" filterable placeholder="变支"
-                :options="slotOf('bianZhi', r.i).options.map(o => ({ label: o, value: o }))"
-                @update:value="v => (ans[slotOf('bianZhi', r.i).id] = v)" style="width:64px" />
-              <span v-else class="qp-val">{{ ans[slotOf('bianZhi', r.i).id] || '—' }}</span>
-              <n-select v-if="!checked && !reveal" :value="ans[slotOf('bianQin', r.i).id] || null" size="tiny" placeholder="变亲"
-                :options="slotOf('bianQin', r.i).options.map(o => ({ label: o, value: o }))"
-                @update:value="v => (ans[slotOf('bianQin', r.i).id] = v)" style="width:76px;margin-left:4px" />
-              <span v-else class="qp-val" style="margin-left:4px">{{ ans[slotOf('bianQin', r.i).id] || '—' }}</span>
-            </template>
-            <span v-else class="tiny muted">—</span>
-          </div>
+          <!-- 爻级错因行 -->
+          <template v-for="f in ['nj', 'wx', 'qin', 'shen', 'dong', 'bianZhi', 'bianQin']" :key="f + r.i">
+            <div v-if="errText(slotOf(f, r.i))" class="fb-line">
+              <span class="x">×</span>{{ errText(slotOf(f, r.i)).replace(/^× /, '') }}
+            </div>
+          </template>
         </template>
       </div>
-
-      <!-- 爻级错因行 -->
-      <template v-for="f in ['nj', 'wx', 'qin', 'shen', 'dong', 'bianZhi', 'bianQin']" :key="f + r.i">
-        <div v-if="errText(slotOf(f, r.i))" class="fb-line">
-          <span class="x">×</span>{{ errText(slotOf(f, r.i)).replace(/^× /, '') }}
+    </div>
+    <!-- 手机端：每爻一张卡，字段纵排，不横滑 -->
+    <div class="qp-cards">
+      <div
+        v-for="r in rows" :key="'c' + r.i"
+        class="qp-card" :class="[rowCls(r.i), { 'is-target': quiz.mode === 'single' && quiz.target === r.i }]"
+      >
+        <div class="qc-top">
+          <span class="qc-pos serif">{{ r.pos }}爻</span>
+          <span class="qc-src mono">{{ SRC_LABEL[r.src] }}</span>
+          <span v-if="quiz.mode === 'single' && quiz.target === r.i" class="qc-tag">目标爻</span>
         </div>
-      </template>
-    </template>
+        <div class="qc-fields">
+          <template v-for="c in cols.slice(2)" :key="c">
+            <!-- 预填 -->
+            <template v-if="c === 'zhi'">
+              <span class="qc-label">{{ PRE_LABEL.zhi }}<i>给定</i></span>
+              <span class="qc-val pre mono">{{ quiz.p.yao[r.i].zhi }}</span>
+            </template>
+            <template v-else-if="c === 'wx'">
+              <span class="qc-label">{{ PRE_LABEL.wx }}<i>给定</i></span>
+              <span class="qc-val pre">{{ quiz.p.yao[r.i].wx }}</span>
+            </template>
+
+            <!-- 六亲 / 目标爻字段 -->
+            <template v-else-if="c === 'qin' || c === 'ask'">
+              <template v-if="c === 'qin' && slotOf('qin', r.i)">
+                <span class="qc-label">六亲</span>
+                <span class="qc-val">
+                  <n-select v-if="!checked && !reveal" :value="ans[slotOf('qin', r.i).id] || null" size="small" placeholder="—"
+                    :options="slotOf('qin', r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[slotOf('qin', r.i).id] = v)" />
+                  <template v-else>
+                    {{ ans[slotOf('qin', r.i).id] || '—' }}
+                    <span v-if="checked && reveal" class="qp-ans mono">{{ slotOf('qin', r.i).answer }}</span>
+                  </template>
+                </span>
+              </template>
+              <template v-else-if="c === 'ask' && askSlotOf(r.i)">
+                <span class="qc-label">{{ FIELD_LABEL[askSlotOf(r.i).field] || '目标爻' }}</span>
+                <span class="qc-val">
+                  <n-select v-if="!checked && !reveal" :value="ans[askSlotOf(r.i).id] || null" size="small" placeholder="—"
+                    :options="askSlotOf(r.i).options.map(o => ({ label: o, value: o }))"
+                    @update:value="v => (ans[askSlotOf(r.i).id] = v)" />
+                  <template v-else>
+                    {{ ans[askSlotOf(r.i).id] || '—' }}
+                    <span v-if="checked && reveal" class="qp-ans mono">{{ askSlotOf(r.i).answer }}</span>
+                  </template>
+                </span>
+              </template>
+            </template>
+
+            <!-- 完整模式各字段 -->
+            <template v-else-if="['nj', 'wx', 'qin', 'shen', 'dong'].includes(c) && slotOf(c, r.i)">
+              <span class="qc-label">{{ FIELD_LABEL[c] }}</span>
+              <span class="qc-val">
+                <n-select v-if="!checked && !reveal" :value="ans[slotOf(c, r.i).id] || null" size="small" filterable placeholder="—"
+                  :options="slotOf(c, r.i).options.map(o => ({ label: o, value: o }))"
+                  @update:value="v => (ans[slotOf(c, r.i).id] = v)" />
+                <template v-else>
+                  {{ ans[slotOf(c, r.i).id] || '—' }}
+                  <span v-if="checked && reveal" class="qp-ans mono">{{ slotOf(c, r.i).answer }}</span>
+                </template>
+              </span>
+            </template>
+
+            <!-- 变爻（两个字段分两行） -->
+            <template v-else-if="c === 'bian' && slotOf('bianZhi', r.i)">
+              <span class="qc-label">变爻纳甲</span>
+              <span class="qc-val">
+                <n-select v-if="!checked && !reveal" :value="ans[slotOf('bianZhi', r.i).id] || null" size="small" filterable placeholder="—"
+                  :options="slotOf('bianZhi', r.i).options.map(o => ({ label: o, value: o }))"
+                  @update:value="v => (ans[slotOf('bianZhi', r.i).id] = v)" />
+                <template v-else>
+                  {{ ans[slotOf('bianZhi', r.i).id] || '—' }}
+                  <span v-if="checked && reveal" class="qp-ans mono">{{ slotOf('bianZhi', r.i).answer }}</span>
+                </template>
+              </span>
+              <span class="qc-label">变爻六亲</span>
+              <span class="qc-val">
+                <n-select v-if="!checked && !reveal" :value="ans[slotOf('bianQin', r.i).id] || null" size="small" placeholder="—"
+                  :options="slotOf('bianQin', r.i).options.map(o => ({ label: o, value: o }))"
+                  @update:value="v => (ans[slotOf('bianQin', r.i).id] = v)" />
+                <template v-else>
+                  {{ ans[slotOf('bianQin', r.i).id] || '—' }}
+                  <span v-if="checked && reveal" class="qp-ans mono">{{ slotOf('bianQin', r.i).answer }}</span>
+                </template>
+              </span>
+            </template>
+          </template>
+        </div>
+
+        <!-- 错因 -->
+        <div v-for="f in ['nj', 'wx', 'qin', 'shen', 'dong', 'bianZhi', 'bianQin']" :key="'e' + f">
+          <div v-if="errText(slotOf(f, r.i))" class="fb-line">
+            <span class="x">×</span>{{ errText(slotOf(f, r.i)).replace(/^× /, '') }}
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- 伏神 -->
     <template v-if="fushenSlots.length">
@@ -260,4 +369,55 @@ const rows = computed(() => [5, 4, 3, 2, 1, 0].map(i => ({ i, pos: POS[i], src: 
 }
 .fb-line .x { color: var(--bad); font-family: var(--mono); margin-right: 6px; }
 .qp-fushen { margin-top: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+/* 手机卡片版；桌面隐藏，由 ≤640px 断点启用 */
+.qp-cards { display: none; }
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  /* 表格整体换成卡片，不再横滑 */
+  .qp-scroll { display: none; }
+  .qp-cards { display: block; }
+  .qp-card {
+    border: 1px solid var(--rule);
+    border-left: 3px solid transparent;
+    border-radius: 2px;
+    padding: 10px 12px 6px;
+    margin-bottom: 8px;
+    background: #fff;
+  }
+  .qp-card.is-target { border-left-color: var(--accent); background: var(--paper-2); }
+  .qp-card.st-wrong { border-left-color: var(--bad); }
+  .qc-top {
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 8px; border-bottom: 1px dashed var(--rule);
+  }
+  .qc-pos { font-size: 15px; color: var(--ink); font-weight: 600; }
+  .qc-src { font-size: 12px; color: var(--ink-3); }
+  .qc-tag {
+    margin-left: auto; font-family: var(--mono); font-size: 11px;
+    letter-spacing: .06em; color: var(--accent);
+    border: 1px solid rgba(166, 51, 31, .38); border-radius: 2px; padding: 0 4px;
+  }
+  .qc-fields {
+    display: grid; grid-template-columns: 62px 1fr;
+    align-items: center; gap: 6px 10px; margin-top: 8px;
+  }
+  .qc-label { font-size: 12.5px; color: var(--ink-3); letter-spacing: .04em; }
+  .qc-label i { font-style: normal; font-size: 10.5px; color: var(--ink-4); margin-left: 3px; }
+  .qc-val { font-size: 15px; color: var(--ink); min-width: 0; }
+  .qc-val :deep(.n-base-selection) { min-height: 36px; }
+  .qp-card .fb-line { margin-top: 6px; }
+
+  .qp-bar { flex-direction: column; align-items: stretch; gap: 8px; }
+  .qp-bar-l { font-size: 13px; line-height: 1.6; }
+  .qp-bar-r { display: flex; gap: 8px; width: 100%; }
+  .qp-bar-r :deep(.n-button) { min-height: 44px; flex: 1; }
+  .qp-given { line-height: 1.7; }
+  .qp-global { gap: 10px 12px; }
+  .qp-gitem { flex: 1 1 100%; }
+  .qp-gitem :deep(.n-select) { flex: 1; min-width: 0; }
+  .qp-fushen { flex-direction: column; align-items: flex-start; }
+  .qp-fushen :deep(.n-select) { width: 100% !important; }
+  .qp-fushen > div { width: 100%; }
+}
 </style>

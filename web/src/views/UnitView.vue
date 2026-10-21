@@ -20,7 +20,7 @@ const u = computed(() => units.value[i.value])
 </script>
 
 <template>
-  <div class="wrap" style="max-width:820px">
+  <div class="wrap unit-wrap" style="max-width:820px">
     <div class="page-head">
       <div class="kicker">§{{ String(i + 1).padStart(2, '0') }} · 卷{{ ['一', '二', '三', '四', '五', '六', '七', '八'][Number(u.vol.slice(1)) - 1] }} {{ u.volTitle }}</div>
       <h1>{{ u.t }}</h1>
@@ -138,4 +138,30 @@ const u = computed(() => units.value[i.value])
 }
 .fn-link:hover .fn-t { color: var(--accent); }
 .foot-act { flex: none; }
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  .brief { padding: 16px 16px 14px; }
+  .brief-p { font-size: 16px; line-height: 1.85; }
+  .keys li { font-size: 15px; }
+
+  /* 固定 56px 高在换行后会裁掉文字 */
+  .drill {
+    height: auto;
+    min-height: 56px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    padding: 12px 14px;
+  }
+  .drill-links { flex-direction: column; }
+  .drill-links :deep(.n-button) { justify-content: flex-start; min-height: 44px; }
+
+  .foot { flex-direction: column; align-items: stretch; gap: 14px; }
+  .foot-nav { gap: 10px; }
+  .fn-link { max-width: 48%; }
+  .fn-t { font-size: 14px; }
+  .foot-act :deep(.n-button) { width: 100%; min-height: 44px; }
+  .note { font-size: 12.5px; }
+}
 </style>

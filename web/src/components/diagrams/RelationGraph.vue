@@ -7,6 +7,7 @@
  * ============================================================ */
 import { computed } from 'vue'
 import { uid } from './uid.js'
+import { useNarrow } from '../../composables/useNarrow.js'
 
 const props = defineProps({
   center: { type: Object, required: true },
@@ -17,12 +18,17 @@ const props = defineProps({
 })
 
 const id = uid('rg')
-const CX = 360
+const narrow = useNarrow()
+/* 手机：画布收窄到 360，节点与半径同比缩小，字号保持不变，
+ * 这样文字在屏上的实际大小约 1.2 倍，不再糊成 5px。 */
+const CW_BASE = computed(() => (narrow.value ? 360 : 720))
+const CX = computed(() => CW_BASE.value / 2)
 const CY = computed(() => props.height / 2)
-const CW = 150
+const CW = computed(() => (narrow.value ? 124 : 150))
 const CH = 58
-const NW = computed(() => props.nodes.some(n => n.wide) ? 132 : 116)
+const NW = computed(() => (narrow.value ? (props.nodes.some(n => n.wide) ? 104 : 92) : (props.nodes.some(n => n.wide) ? 132 : 116)))
 const NH = 52
+const R = computed(() => (narrow.value ? 128 : 206))
 
 const TONE = {
   good: { stroke: '#3F7D5A', fill: '#F6FAF7' },
@@ -45,17 +51,17 @@ const placed = computed(() => {
   const m = {}
   for (const n of props.nodes) {
     const a = ((n.angle ?? 0) * Math.PI) / 180
-    const r = n.r ?? 206
+    const r = n.r ?? R.value
     m[n.id] = {
       ...n,
-      x: CX + Math.cos(a) * r,
+      x: CX.value + Math.cos(a) * r,
       y: CY.value + Math.sin(a) * r * 0.76
     }
   }
   return m
 })
 
-const centerRect = computed(() => ({ x: CX, y: CY.value, w: CW, h: CH }))
+const centerRect = computed(() => ({ x: CX.value, y: CY.value, w: CW.value, h: CH }))
 const nodeRect = (n) => ({ x: n.x, y: n.y, w: NW.value, h: NH })
 
 /* 从矩形中心朝目标点，取边框交点 */
@@ -99,7 +105,7 @@ const paths = computed(() => props.edges.map(e => {
 </script>
 
 <template>
-  <svg class="dgm" :viewBox="`0 0 720 ${height}`" role="img" :aria-label="center.t + '关系图'">
+  <svg class="dgm" :viewBox="`0 0 ${CW_BASE} ${height}`" role="img" :aria-label="center.t + '关系图'">
     <defs>
       <marker v-for="(k, name) in KIND" :key="name" :id="id + name" markerWidth="9" markerHeight="9" refX="8.2" refY="4.5" orient="auto">
         <path d="M0,0 L9,4.5 L0,9 Z" :fill="k.color" />
@@ -122,8 +128,7 @@ const paths = computed(() => props.edges.map(e => {
     <!-- 环绕节点 -->
     <g v-for="n in nodes" :key="n.id">
       <rect
-        :x="placed[n.id].x - NW / 2" :y="placed[n.id].y - NH / 2" :width="NW" :height="NH" rx="2"
-        :fill="(TONE[n.tone] || TONE.plain).fill" :stroke="(TONE[n.tone] || TONE.plain).stroke"
+        :x="placed[n.id].x - NW / 2" :y="placed[n.id].y - NH / 2" :width="NW" :height="NH" rx="2"        :fill="(TONE[n.tone] || TONE.plain).fill" :stroke="(TONE[n.tone] || TONE.plain).stroke"
         :stroke-width="n.tone && n.tone !== 'plain' ? 1.6 : 1"
       />
       <text :x="placed[n.id].x" :y="placed[n.id].y + (n.sub ? -1 : 5.5)" text-anchor="middle" class="s f-ink" font-size="17">{{ n.t }}</text>

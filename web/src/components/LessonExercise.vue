@@ -43,4 +43,14 @@ input { accent-color: var(--ink); }
 .lesson-feedback.correct { border-color: var(--good); }
 .lesson-feedback.correct strong { color: var(--good); }
 .lesson-feedback p { margin: 8px 0 0; }
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  .lesson-exercise { padding: 18px 16px; margin-top: 26px; }
+  h3 { font-size: 16px; line-height: 1.55; }
+  label { min-height: 48px; padding: 10px 8px; font-size: 15px; line-height: 1.6; }
+  input { width: 20px; height: 20px; flex: none; }
+  .check-answer { width: 100%; min-height: 44px; font-size: 15px; }
+  .lesson-feedback { font-size: 15px; line-height: 1.8; }
+}
 </style>

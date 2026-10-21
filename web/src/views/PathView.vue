@@ -39,14 +39,14 @@ const quizTimes = computed(() => state.value.quiz.length)
       <div class="cur-sum">
         <p v-for="(s, i) in nextSentences" :key="i">{{ s }}</p>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;margin-top:16px">
-        <span class="mono tiny muted">{{ state.last ? '上次停在 ' + state.last : '尚未开始' }}　·　{{ next.volTitle }}</span>
+      <div class="cur-card-head" style="display:flex;align-items:center;gap:12px;margin-top:16px">
+        <span class="mono tiny muted cur-meta">{{ state.last ? '上次停在 ' + state.last : '尚未开始' }}　·　{{ next.volTitle }}</span>
         <span style="flex:1" />
         <n-button type="primary" @click="router.push('/unit/' + next.id)">继续学习 →</n-button>
       </div>
     </n-card>
 
-    <div style="display:flex;gap:32px;margin-bottom:16px">
+    <div class="stats" style="display:flex;gap:32px;margin-bottom:16px">
       <div style="text-align:right">
         <div class="mono" style="font-size:22px">{{ doneN }}<span class="tiny muted">/{{ units.length }}</span></div>
         <div class="tiny muted">已学单元</div>
@@ -105,7 +105,7 @@ const quizTimes = computed(() => state.value.quiz.length)
             <div class="p">{{ c.p }}</div>
             <div class="keys"><span v-for="k in c.keys" :key="k">{{ k }}</span></div>
           </div>
-          <div class="tiny muted">{{ isDone(c.id) ? '已学' : '未学' }}</div>
+          <div class="state tiny muted">{{ isDone(c.id) ? '已学' : '未学' }}</div>
         </router-link>
       </div>
     </n-card>
@@ -121,5 +121,14 @@ const quizTimes = computed(() => state.value.quiz.length)
   font-size: 15px;
   line-height: 1.9;
   text-wrap: pretty;
+}
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  .cur-card-head { flex-wrap: wrap; gap: 8px !important; }
+  .cur-card-head :deep(.n-button) { width: 100%; min-height: 44px; }
+  .cur-meta { width: 100%; }
+  .stats { gap: 20px !important; justify-content: space-between; }
+  .unit .state { font-size: 12.5px; color: var(--ink-3); }
 }
 </style>

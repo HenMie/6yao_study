@@ -92,4 +92,13 @@ const wenYan = computed(() => rec.value ? (trad.value ? rec.value.wenYan : rec.v
 .gw-zhuan { margin-top: 8px; padding: 10px 12px; background: var(--paper-2); font-size: 14px; line-height: 1.9; }
 .gw-zhuan p { margin: 4px 0; color: var(--ink-2); }
 .gw-zhuan b { font-family: var(--serif); color: var(--ink-3); margin-right: 4px; }
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  .gw-head { flex-wrap: wrap; row-gap: 6px; }
+  .gw-toggle { min-height: 44px; padding: 6px 12px; font-size: 13px; }
+  .gw-more { min-height: 44px; display: flex; align-items: center; font-size: 13px; }
+  .gw-line { font-size: 15px; line-height: 1.95; }
+  .gw-guaci { font-size: 16px; }
+}
 </style>

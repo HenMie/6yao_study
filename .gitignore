@@ -14,6 +14,7 @@ web/shots/
 
 # 本地工具数据
 .workbuddy-ai/
+.zcode/
 
 # 系统文件
 .DS_Store

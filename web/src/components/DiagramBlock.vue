@@ -52,6 +52,10 @@ const rest = computed(() => {
   const { type, cap, note, ...others } = props.spec
   return others
 })
+
+/* 手机端（≤640px）：横向多列图（本卦变卦对照、判断分叉、作用链、变化方向）
+ * 在组件内按 360 单位窄画布重排，其余图等比缩放即可读。
+ * 因此这里不再需要横向滚动容器与滑动提示。 */
 </script>
 
 <template>
@@ -66,3 +70,10 @@ const rest = computed(() => {
     <p v-if="spec.note" class="dia-note">{{ spec.note }}</p>
   </figure>
 </template>
+
+<style scoped>
+/* 手机端：横向多列图已在组件内按窄画布重排，这里只保留内距 */
+@media (max-width: 640px) {
+  .dia-body { padding: 12px 12px 8px; }
+}
+</style>

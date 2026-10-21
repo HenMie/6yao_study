@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { NCard, NButton, NAlert } from 'naive-ui'
 import { useRoute, useRouter } from 'vue-router'
 import { CASES } from '../content/data'
@@ -10,6 +10,8 @@ const route = useRoute()
 const router = useRouter()
 
 const cur = computed(() => CASES.find(c => c.id === route.params.id) || CASES[0])
+/* 手机端案例列表默认收起，只留当前一项的折叠头 */
+const listOpen = ref(false)
 
 function parseGz(s) {
   const m = s.match(/([甲乙丙丁戊己庚辛壬癸])([子丑寅卯辰巳午未申酉戌亥])日/)
@@ -40,18 +42,28 @@ const p = computed(() => {
     </div>
 
     <div class="case-shell">
-      <div>
-        <div v-for="c in CASES" :key="c.id" class="case-entry">
-          <router-link
-            class="case-item"
-            :class="{ on: c.id === cur.id }"
-            :to="'/cases/' + c.id"
-            :aria-current="c.id === cur.id ? 'page' : undefined"
-            :aria-label="`${c.title}，${c.focus}${c.id === cur.id ? '，当前案例' : ''}`"
-          >
-            <div style="font-size:14px;font-weight:500">{{ c.title }}</div>
-            <div class="tiny muted">{{ c.focus }}</div>
-          </router-link>
+      <div class="case-list-wrap">
+        <!-- 手机端折叠开关 -->
+        <button class="case-picker" type="button" :aria-expanded="listOpen" @click="listOpen = !listOpen">
+          <span class="cp-label">案例 {{ CASES.findIndex(c => c.id === cur.id) + 1 }}/{{ CASES.length }}</span>
+          <span class="cp-cur serif">{{ cur.title }}</span>
+          <span class="cp-act">{{ listOpen ? '收起 ▲' : '换一例 ▼' }}</span>
+        </button>
+
+        <div class="case-list" :class="{ open: listOpen }">
+          <div v-for="c in CASES" :key="c.id" class="case-entry">
+            <router-link
+              class="case-item"
+              :class="{ on: c.id === cur.id }"
+              :to="'/cases/' + c.id"
+              :aria-current="c.id === cur.id ? 'page' : undefined"
+              :aria-label="`${c.title}，${c.focus}${c.id === cur.id ? '，当前案例' : ''}`"
+              @click="listOpen = false"
+            >
+              <div style="font-size:14px;font-weight:500">{{ c.title }}</div>
+              <div class="tiny muted">{{ c.focus }}</div>
+            </router-link>
+          </div>
         </div>
       </div>
 
@@ -85,7 +97,7 @@ const p = computed(() => {
             {{ cur.origin === 'course' ? '课程卦例为本站概要转述，便于对照规则。' : '本卦为本站构造的规则练习，用于熟悉判定步骤。' }}
           </n-alert>
 
-          <div style="display:flex;gap:10px;margin-top:16px">
+          <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
             <n-button size="small" quaternary @click="router.push('/walk')">用走查器走一遍 →</n-button>
             <n-button size="small" quaternary @click="router.push('/manual/' + (cur.unit || ({k1:'c14', k2:'c21', k3:'c24', k4:'c34', k5:'c13'}[cur.id])))">去手册看这一章</n-button>
           </div>
@@ -97,3 +109,29 @@ const p = computed(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* 案例选择器：桌面无折叠头，列表常显 */
+.case-list-wrap { min-width: 0; }
+.case-picker { display: none; }
+
+/* ---------- 手机端：折叠列表，不横滑 ---------- */
+@media (max-width: 640px) {
+  .case-picker {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    min-height: 52px; padding: 8px 12px; margin-bottom: 8px;
+    background: var(--paper-2); border: 1px solid var(--rule);
+    border-left: 2px solid var(--accent); border-radius: 2px;
+    font-family: inherit; color: var(--ink); text-align: left; cursor: pointer;
+  }
+  .cp-label { font-family: var(--mono); font-size: 12px; color: var(--ink-3); flex: none; }
+  .cp-cur { font-size: 15px; font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cp-act { font-size: 12px; color: var(--accent); flex: none; }
+
+  .case-list { display: none; }
+  .case-list.open { display: block; }
+  .case-list :deep(.case-item) { min-height: 48px; display: flex; flex-direction: column; justify-content: center; }
+  .case-detail { gap: 24px; }
+  .case-detail :deep(.n-button) { min-height: 44px; }
+}
+</style>

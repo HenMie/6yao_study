@@ -38,16 +38,31 @@ const noOf = (i) => CN[i] || String(i + 1)
         <p v-for="(v, j) in b.verse" :key="'v' + j">{{ v }}</p>
       </div>
 
-      <table v-if="b.tbl" class="cb-tbl">
-        <thead>
-          <tr><th v-for="h in b.tbl.head" :key="h">{{ h }}</th></tr>
-        </thead>
-        <tbody>
-          <tr v-for="(r, j) in b.tbl.rows" :key="'r' + j">
-            <td v-for="(c, k) in r" :key="'c' + k" :class="{ first: k === 0 }">{{ c }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div v-if="b.tbl" class="cb-tbl-wrap">
+        <table class="cb-tbl">
+          <thead>
+            <tr><th v-for="h in b.tbl.head" :key="h">{{ h }}</th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="(r, j) in b.tbl.rows" :key="'r' + j">
+              <td v-for="(c, k) in r" :key="'c' + k" :class="{ first: k === 0 }">{{ c }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 手机端：每条一行变成一张小卡，首列作标题，其余字段纵排 -->
+      <div v-if="b.tbl" class="cb-cards">
+        <div v-for="(r, j) in b.tbl.rows" :key="'card' + j" class="cb-card">
+          <div class="cb-card-t serif">{{ r[0] }}</div>
+          <dl class="cb-card-f">
+            <template v-for="(h, k) in b.tbl.head.slice(1)" :key="'f' + k">
+              <dt>{{ h }}</dt>
+              <dd>{{ r[k + 1] }}</dd>
+            </template>
+          </dl>
+        </div>
+      </div>
 
       <div v-if="b.warn" class="cb-warn">
         <div class="cb-warn-tag">易错</div>
@@ -113,6 +128,36 @@ const noOf = (i) => CN[i] || String(i + 1)
 }
 .cb-tbl tr:last-child td { border-bottom: 0; }
 .cb-tbl td.first { font-family: var(--serif); font-weight: 600; color: var(--ink); white-space: nowrap; }
+
+/* 手机端条目卡：桌面隐藏，≤640px 时替换表格 */
+.cb-cards { display: none; }
+
+@media (max-width: 640px) {
+  .cb-tbl-wrap { display: none; }
+  .cb-cards { display: block; margin: 6px 0 12px; }
+  .cb-card {
+    border: 1px solid var(--rule);
+    border-left: 2px solid var(--rule-2);
+    border-radius: 2px;
+    padding: 10px 12px 8px;
+    margin-bottom: 8px;
+    background: #fff;
+  }
+  .cb-card-t {
+    font-size: 15.5px; font-weight: 600; color: var(--ink);
+    padding-bottom: 6px; margin-bottom: 6px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .cb-card-f {
+    display: grid; grid-template-columns: minmax(64px, max-content) 1fr;
+    gap: 4px 12px; margin: 0; font-size: 14.5px;
+  }
+  .cb-card-f dt {
+    font-size: 12px; color: var(--ink-3); letter-spacing: .06em;
+    padding-top: 3px;
+  }
+  .cb-card-f dd { margin: 0; color: var(--ink-2); line-height: 1.75; }
+}
 
 .cb-warn {
   border-left: 2px solid var(--accent);

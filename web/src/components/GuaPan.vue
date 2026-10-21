@@ -13,30 +13,66 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
 
 <template>
   <div class="pan">
-    <div class="pan-head">
-      <div>六神</div><div>六亲</div><div>纳甲</div><div>爻象</div><div>世应</div><div>动</div>
-    </div>
-    <div v-for="y in rows" :key="y.pos" class="pan-row" :class="{ 'is-shi': y.shi }">
-      <div class="shen">{{ y.shen }}</div>
-      <div>{{ y.qin }}<span class="muted" style="font-size:13px;margin-left:2px">{{ y.wx }}</span></div>
-      <div class="nj">{{ y.gan }}{{ y.zhi }}{{ y.yy }}</div>
-      <div>
-        <div class="yao" :class="y.yang ? 'yang' : 'yin'"><i /><i v-if="!y.yang" /></div>
+    <!-- 桌面端：六列对照表 -->
+    <div class="pan-scroll">
+      <div class="pan-inner">
+        <div class="pan-head">
+          <div>六神</div><div>六亲</div><div>纳甲</div><div>爻象</div><div>世应</div><div>动</div>
+        </div>
+        <div v-for="y in rows" :key="y.pos" class="pan-row" :class="{ 'is-shi': y.shi }">
+          <div class="shen">{{ y.shen }}</div>
+          <div>{{ y.qin }}<span class="muted" style="font-size:13px;margin-left:2px">{{ y.wx }}</span></div>
+          <div class="nj">{{ y.gan }}{{ y.zhi }}{{ y.yy }}</div>
+          <div>
+            <div class="yao" :class="y.yang ? 'yang' : 'yin'"><i /><i v-if="!y.yang" /></div>
+          </div>
+          <div class="shiy">
+            <b v-if="y.shi">世</b><b v-else-if="y.ying">应</b>
+            <span v-if="y.kong" class="kong">空</span>
+          </div>
+          <div class="mark">{{ y.dong ? (y.yang ? '○' : '×') : '' }}</div>
+        </div>
+
+        <div v-if="showBian && p.bian" class="pan-row is-bian" style="background:var(--paper-2)">
+          <div class="shen">变卦</div>
+          <div style="grid-column:span 4;font-size:13px;color:var(--ink-3)">
+            {{ p.bian.name }}　
+            <span v-for="y in p.yao.filter(x => x.bian)" :key="y.pos">
+              {{ ['初','二','三','四','五','上'][y.pos-1] }}爻→{{ y.bian.qin }}{{ y.bian.zhi }}　
+            </span>
+          </div>
+        </div>
       </div>
-      <div class="shiy">
-        <b v-if="y.shi">世</b><b v-else-if="y.ying">应</b>
-        <span v-if="y.kong" class="kong">空</span>
-      </div>
-      <div class="mark">{{ y.dong ? (y.yang ? '○' : '×') : '' }}</div>
     </div>
 
-    <div v-if="showBian && p.bian" class="pan-row" style="background:var(--paper-2)">
-      <div class="shen">变卦</div>
-      <div style="grid-column:span 4;font-size:13px;color:var(--ink-3)">
-        {{ p.bian.name }}　
-        <span v-for="y in p.yao.filter(x => x.bian)" :key="y.pos">
-          {{ ['初','二','三','四','五','上'][y.pos-1] }}爻→{{ y.bian.qin }}{{ y.bian.zhi }}　
-        </span>
+    <!-- 手机端：每爻一张卡，纵向排列，不横滑 -->
+    <div class="pan-cards">
+      <div v-for="y in rows" :key="'c' + y.pos" class="pan-card" :class="{ 'is-shi': y.shi, 'is-dong': y.dong }">
+        <div class="pc-top">
+          <span class="pc-pos">{{ y.pos }}爻</span>
+          <span class="yao" :class="y.yang ? 'yang' : 'yin'"><i /><i v-if="!y.yang" /></span>
+          <span class="pc-mark">
+            <b v-if="y.shi" class="pc-who">世</b>
+            <b v-else-if="y.ying" class="pc-who">应</b>
+            <span v-if="y.kong" class="kong">空</span>
+            <span v-if="y.dong" class="pc-dong">{{ y.yang ? '○ 动' : '× 动' }}</span>
+          </span>
+        </div>
+        <dl class="pc-fields">
+          <dt>六神</dt><dd>{{ y.shen }}</dd>
+          <dt>六亲</dt><dd>{{ y.qin }}<span class="muted"> · {{ y.wx }}</span></dd>
+          <dt>纳甲</dt><dd class="nj">{{ y.gan }}{{ y.zhi }}{{ y.yy }}</dd>
+          <template v-if="showBian && y.bian">
+            <dt>变爻</dt><dd class="nj">{{ y.bian.qin }}{{ y.bian.zhi }}</dd>
+          </template>
+        </dl>
+      </div>
+
+      <div v-if="showBian && p.bian" class="pan-card is-bian">
+        <div class="pc-top"><span class="pc-pos">变卦</span><strong class="serif">{{ p.bian.name }}</strong></div>
+        <p class="pc-note">
+          动爻：<span v-for="y in p.yao.filter(x => x.bian)" :key="y.pos">{{ ['初','二','三','四','五','上'][y.pos-1] }}→{{ y.bian.qin }}{{ y.bian.zhi }}　</span>
+        </p>
       </div>
     </div>
 

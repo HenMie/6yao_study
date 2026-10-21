@@ -17,6 +17,11 @@
   --serif: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
   --sans: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
   --mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+
+  /* 粘顶元素要让开的顶栏高度；顶栏在手机上折成两行，由 App.vue 在 ≤640px 覆写 */
+  --topbar-h: 60px;
+  /* 触摸目标最小高度 */
+  --tap: 44px;
 }
 
 * { box-sizing: border-box; }
@@ -46,6 +51,9 @@ p { margin: 0 0 12px; }
 .mono { font-family: var(--mono); }
 .serif { font-family: var(--serif); }
 
+/* 卦盘的横向滚动容器只在手机端启用；桌面端用 display:contents 让两层包装完全不参与布局 */
+.pan-scroll, .pan-inner { display: contents; }
+
 /* ---------- 卦盘（组件库没有这个，属领域图形，自绘） ---------- */
 .pan { font-size: 14px; }
 .pan-head, .pan-row {
@@ -62,6 +70,8 @@ p { margin: 0 0 12px; }
   position: relative; transition: background .14s;
 }
 .pan-row:last-child { border-bottom: 0; }
+/* 变卦行在包装层里不是 :last-child，需要单独保留底边 */
+.pan-row.is-bian { border-bottom: 1px solid #EFEADF; }
 .pan-row:hover { background: var(--paper-2); }
 .pan-row:hover::before {
   content: ''; position: absolute; left: 0; top: 0; bottom: 0;
@@ -82,6 +92,34 @@ p { margin: 0 0 12px; }
 .yao.yin i:last-child { flex: 0 0 44%; margin-left: auto; }
 
 .fushen { padding: 9px 12px; border-top: 1px dashed var(--rule); font-size: 13px; color: var(--ink-3); }
+
+/* ---------- 卦盘手机卡片（桌面隐藏，由 ≤640px 断点启用） ---------- */
+.pan-cards { display: none; }
+.pan-card {
+  border: 1px solid var(--rule);
+  border-left: 3px solid transparent;
+  border-radius: 2px;
+  background: #fff;
+  padding: 10px 12px 8px;
+  margin-bottom: 8px;
+}
+.pan-card.is-shi { border-left-color: var(--accent); }
+.pan-card.is-dong { background: rgba(166, 51, 31, .03); }
+.pc-top {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 8px; border-bottom: 1px dashed var(--rule);
+}
+.pc-pos { font-family: var(--mono); font-size: 12px; color: var(--ink-3); flex: none; width: 34px; }
+.pc-mark { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.pc-who { font-family: var(--serif); color: var(--accent); }
+.pc-dong { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+.pc-fields {
+  display: grid; grid-template-columns: 40px 1fr; gap: 3px 10px;
+  margin: 8px 0 0; font-size: 14px;
+}
+.pc-fields dt { font-size: 12px; color: var(--ink-3); letter-spacing: .06em; }
+.pc-fields dd { margin: 0; color: var(--ink); }
+.pc-note { margin: 6px 0 0; font-size: 13px; line-height: 1.7; color: var(--ink-3); }
 
 /* ---------- 课程图示（自绘 SVG / 数据图版） ---------- */
 .dia {
@@ -197,5 +235,65 @@ p { margin: 0 0 12px; }
 .case-item:hover, .case-item.on { background: var(--paper-2); border-left-color: var(--accent); }
 .case-detail { display: grid; grid-template-columns: 40% 60%; gap: 32px; align-items: start; }
 @media (max-width: 1239px) {
-  .case-shell, .case-detail { grid-template-columns: 1fr; }
+  /* minmax(0,1fr)：1fr 的自动最小尺寸会被卡头/表格的固有宽度顶开 */
+  .case-shell, .case-detail { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ============================================================
+ * 手机端适配（≤640px）
+ * 基准机型 iPhone 15 Pro Max（430×932 CSS px），向下覆盖 375pt。
+ * 桌面规则一律不动，本节只做覆盖。
+ * ============================================================ */
+
+/* 表格横向滚动：用 display:block 让表格在窄屏内自成滚动区，
+   不撑破页面。border-collapse 在 block 下失效，改由单元格边线补。 */
+.cb-tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 4px 0 12px; }
+.cb-tbl-wrap > .cb-tbl { margin: 0; }
+
+@media (max-width: 900px) {
+  /* 平板与窄桌面区间：正文表格同样可能溢出，先给滚动兜底 */
+  .cb-tbl-wrap { margin: 4px 0 12px; }
+}
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+
+  .wrap { max-width: none; padding: 20px 16px 40px; }
+  .page-head { padding-bottom: 14px; margin-bottom: 24px; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 19px; }
+  .lede { font-size: 15px; line-height: 1.8; }
+
+  /* ---------- 卦盘：每爻一张卡，纵向排列，不横滑 ---------- */
+  .pan-scroll { display: none; }
+  .pan-cards { display: block; }
+  .pan { font-size: 14px; }
+  .yao { width: 76px; gap: 6px; }
+  .fushen { padding: 9px 10px; font-size: 13px; }
+
+  /* ---------- 图示：4 幅横图已按窄画布重排，其余等比缩放 ---------- */
+  .dia { margin: 12px 0 16px; }
+  .dia-cap { padding: 8px 12px; font-size: 11px; }
+  .dia-body { padding: 12px 12px 8px; }
+  .dia-body > svg { width: 100%; height: auto; }
+  .dia-note { padding: 0 12px 10px; font-size: 12.5px; }
+
+  /* ---------- 正文表格：由 ContentBlocks 的条目卡替代，这里只兜底 ---------- */
+  .cb-tbl td, .cb-tbl th { padding: 7px 10px; }
+
+  /* ---------- 集卡与单元行 ---------- */
+  .vol-cards { grid-template-columns: 1fr; gap: 10px; }
+  .vol-card { padding: 13px 14px; }
+  .vol-card .vc-goal { min-height: 0; }
+  .unit { grid-template-columns: 22px 1fr; gap: 10px; padding: 12px 10px 12px 8px; }
+  .unit .state { grid-column: 2; margin-top: 2px; }
+  .unit .t { font-size: 15px; }
+  .unit .p { font-size: 13.5px; }
+
+  /* ---------- 案例 ---------- */
+  .case-item { padding: 12px 10px; }
+
+  /* ---------- 通用触摸目标 ---------- */
+  .tap-44 { min-height: var(--tap); }
+}
+

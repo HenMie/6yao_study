@@ -86,6 +86,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
           <div v-else>
             <div style="border:1px solid var(--rule);border-radius:2px;overflow:hidden">
               <div
+                class="spec-head"
                 style="height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;background:var(--paper-2)"
                 @click="specOpen = !specOpen"
               >
@@ -95,6 +96,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
               <div v-if="specOpen">
                 <label
                   v-for="item in s.list" :key="item"
+                  class="spec-item"
                   style="height:40px;display:flex;align-items:center;gap:10px;padding:0 14px;border-top:1px solid var(--rule);cursor:pointer;font-size:13px"
                   @click.prevent="toggleSpec(item)"
                 >
@@ -126,7 +128,7 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
         </n-card>
       </div>
 
-      <div style="position:sticky;top:80px">
+      <div class="walk-aside">
         <n-card title="草稿纸">
           <template #header-extra><n-button size="tiny" quaternary @click="reset">重来</n-button></template>
           <div v-if="!draft" class="tiny muted" style="padding:20px 0;text-align:center">选一项，这里会记下你的判断和它的出处。</div>
@@ -157,5 +159,25 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
 }
 .opt:hover { border-color: var(--ink); }
 .opt.on { border-color: var(--accent); background: var(--accent-wash); }
+.walk-aside { position: sticky; top: calc(var(--topbar-h) + 20px); align-self: start; }
 @media (max-width: 1239px) { .walk-grid { grid-template-columns: 1fr !important; } }
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  /* 单列堆叠后草稿纸在步骤卡之后，粘顶只会遮挡内容 */
+  .walk-aside { position: static; }
+  .opt {
+    flex: 1 1 100%;
+    min-height: 52px;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .spec-head { min-height: 48px; }
+  .spec-item { min-height: 48px; font-size: 14px !important; }
+  .step-warn { font-size: 14px; line-height: 1.75; }
+  /* 步骤卡右上角的状态标签与"重来"按钮 */
+  .walk-aside :deep(.n-button) { min-height: 44px; }
+  .walk-aside :deep(.n-card-header) { align-items: center; }
+}
 </style>

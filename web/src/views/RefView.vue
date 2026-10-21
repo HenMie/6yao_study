@@ -10,7 +10,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
 </script>
 
 <template>
-  <div class="wrap">
+  <div class="wrap ref-wrap">
     <div class="page-head">
       <div class="kicker">Reference</div>
       <h1>速查</h1>
@@ -22,7 +22,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
     <template v-for="g in groups" :key="g">
       <template v-if="filtered(g).length">
         <div class="tiny muted" style="letter-spacing:.14em;margin:22px 0 10px">{{ g }}</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+        <div class="card-grid">
           <n-card v-for="c in filtered(g)" :key="c.q" size="small">
             <div class="tiny" style="color:var(--accent);letter-spacing:.12em">{{ c.g }}</div>
             <div class="serif" style="font-size:16px;font-weight:600;margin:2px 0 6px">{{ c.q }}</div>
@@ -34,7 +34,7 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
     <div v-if="!hasAny" class="muted tiny" style="padding:40px;text-align:center">没有匹配的卡片。</div>
 
     <div class="tiny muted" style="letter-spacing:.14em;margin:36px 0 10px">对照表</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">
+    <div class="tbl-grid">
       <n-card size="small" title="六合 / 六冲">
         <div style="display:flex;gap:16px">
           <div style="flex:1">
@@ -95,3 +95,19 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
     </div>
   </div>
 </template>
+
+<style scoped>
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.tbl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  /* 280/320px 最小列宽在 430px 屏上只剩一列，但仍会被 320 撑出边距，直接单列 */
+  .card-grid, .tbl-grid { grid-template-columns: 1fr; }
+  .ref-wrap :deep(.n-card) { font-size: 15px; }
+  .ref-wrap :deep(table) { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .ref-wrap :deep(table) td { white-space: nowrap; }
+  .ref-wrap :deep(table) td:first-child { white-space: normal; }
+  .ref-wrap :deep(.n-input) { font-size: 16px; }
+}
+</style>

@@ -75,7 +75,7 @@ function onGraded(rec) {
     <div style="display:grid;grid-template-columns:300px minmax(520px,1fr);gap:24px;align-items:start" class="cast-grid">
       <div>
         <n-card style="margin-bottom:16px">
-          <n-radio-group v-model:value="mode" size="small" style="margin-bottom:16px">
+          <n-radio-group v-model:value="mode" size="small" class="mode-switch">
             <n-radio-button value="toss">摇卦</n-radio-button>
             <n-radio-button value="manual">手动</n-radio-button>
             <n-radio-button value="quiz">判卷</n-radio-button>
@@ -94,12 +94,12 @@ function onGraded(rec) {
               <span style="flex:1" />
               <n-button size="tiny" :type="i === nextTossIndex ? 'primary' : 'tertiary'" @click="doToss(i)">{{ v === null ? '摇这一爻' : '重摇' }}</n-button>
             </div>
-            <n-alert v-if="tossProgress === 0" type="default" :bordered="false" style="margin-top:12px;font-size:14px">先摇初爻，完成一爻后继续下一爻。每一步都会保留在左侧记录中。</n-alert>
-            <n-alert v-else-if="tossProgress === 6" type="success" :bordered="false" style="margin-top:12px;font-size:14px">
-              六爻已完成，右侧卦盘已生成。可以先查看卦盘，再进入断卦走查。
+            <n-alert v-if="tossProgress === 0" type="default" :bordered="false" class="cast-tips" style="margin-top:12px;font-size:14px">先摇初爻，完成一爻后继续下一爻。<span class="say-col">每一步都会保留在左侧记录中。</span><span class="say-row">每一步都会保留在上方记录中。</span></n-alert>
+            <n-alert v-else-if="tossProgress === 6" type="success" :bordered="false" class="cast-tips" style="margin-top:12px;font-size:14px">
+              六爻已完成，<span class="say-col">右侧</span><span class="say-row">下方</span>卦盘已生成。可以先查看卦盘，再进入断卦走查。
               <n-button size="tiny" quaternary @click="router.push('/walk')">去断卦走查 →</n-button>
             </n-alert>
-            <div style="display:flex;gap:8px;margin-top:12px">
+            <div class="cast-actions" style="display:flex;gap:8px;margin-top:12px">
               <n-button size="small" quaternary @click="tossAll">连摇六次</n-button>
               <n-button size="small" quaternary @click="clearAll">清空</n-button>
             </div>
@@ -164,7 +164,7 @@ function onGraded(rec) {
           <template #header-extra>
             <span class="tiny mono muted">{{ pan ? pan.ben.name + (pan.bian ? ' 之 ' + pan.bian.name : '') : '' }}</span>
           </template>
-          <div v-if="!pan" style="padding:32px;text-align:center" class="muted tiny">还没有起卦。先在左侧完成六次逐爻操作，卦盘会在第六爻完成后自动生成。</div>
+          <div v-if="!pan" style="padding:32px 12px;text-align:center" class="muted tiny">还没有起卦。先<span class="say-col">在左侧</span><span class="say-row">在上方</span>完成六次逐爻操作，卦盘会在第六爻完成后自动生成。</div>
           <template v-else>
             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px">
               <strong class="serif" style="font-size:17px">{{ pan.ben.name }}</strong>
@@ -206,5 +206,29 @@ function onGraded(rec) {
   border-bottom: 1px solid #EFEADF;
 }
 .toss-row.next { background: var(--accent-wash); }
-@media (max-width: 1239px) { .cast-grid { grid-template-columns: 1fr !important; } }
+.mode-switch { margin-bottom: 16px; }
+/* 双栏时"左/右"，单栏时"上/下"——默认显示桌面措辞 */
+.say-row { display: none; }
+
+@media (max-width: 1239px) {
+  .cast-grid { grid-template-columns: 1fr !important; }
+  .say-col { display: none; }
+  .say-row { display: inline; }
+}
+
+/* ---------- 手机端 ---------- */
+@media (max-width: 640px) {
+  /* minmax(520px,1fr) 在弹性布局里会把单列撑到 520px，必须换成 minmax(0,1fr) */
+  .cast-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 16px; }
+  .toss-row { gap: 8px; padding: 8px 0; }
+  .toss-row :deep(.n-button) { min-height: 44px; min-width: 84px; flex: none; }
+  /* 摇卦／手动／判卷三个切换按钮做成整行等分，单手好点 */
+  .mode-switch { display: flex; width: 100%; margin-bottom: 16px; }
+  .mode-switch :deep(.n-radio-button) { flex: 1; text-align: center; min-height: 44px; }
+  .mode-switch :deep(.n-radio-button__state-border),
+  .mode-switch :deep(.n-radio-button__border) { display: none; }
+  .mode-switch :deep(.n-radio-button__label) { display: flex; align-items: center; justify-content: center; height: 100%; }
+  .cast-actions :deep(.n-button) { min-height: 44px; }
+  .cast-tips { font-size: 13px; }
+}
 </style>

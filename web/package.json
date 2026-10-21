@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "check:content": "node contentcheck.mjs",
-    "check:course-ui": "node course-ui-check.mjs"
+    "check:course-ui": "node course-ui-check.mjs",
+    "check:mobile": "node mobile-check.mjs",
+    "check:desktop-diff": "node desktop-diff.mjs"
   },
   "dependencies": {
     "lunar-javascript": "^1.6.13",
