@@ -12,8 +12,8 @@ const hasAny = computed(() => CARDS.some(c => !q.value || (c.q + c.a).includes(q
 <template>
   <div class="wrap ref-wrap">
     <div class="page-head">
-      <div class="kicker">Reference</div>
       <h1>速查</h1>
+      <span class="page-side" aria-hidden="true"><i>按图</i><i>索骥</i></span>
       <p class="lede">{{ CARDS.length }} 张知识卡 + 对照表。断卦卡住的时候，先来这里查，不要回去翻课程。</p>
     </div>
 

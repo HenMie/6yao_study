@@ -14,7 +14,15 @@
   --bad: #A6331F;
   --warn: #9A7B32;
 
+  /* 五行色：木青 火赤 土赭 金黄 水玄。只给五行字与地支着色，正文一律暖墨 */
+  --wx-mu: #3E7A52;
+  --wx-huo: #A6331F;
+  --wx-tu: #8A6138;
+  --wx-jin: #8F6E15;
+  --wx-shui: #375A7B;
+
   --serif: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  --kai: "LXGW WenKai", "霞鹜文楷", "Kaiti SC", "STKaiti", "KaiTi", "楷体", "Source Han Serif SC", "Noto Serif SC", serif;
   --sans: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
   --mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
 
@@ -36,15 +44,42 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; margin: 0; line-height: 1.5; letter-spacing: .02em; }
-h1 { font-size: 28px; }
+h1 { font-size: 34px; font-weight: 900; letter-spacing: .03em; text-wrap: balance; }
 h2 { font-size: 20px; }
 p { margin: 0 0 12px; }
 
 .wrap { max-width: 1160px; margin: 0 auto; padding: 32px 24px 48px; }
 .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; color: var(--accent); text-transform: uppercase; }
-.lede { color: var(--ink-3); font-size: 14px; max-width: 64ch; }
-.page-head { border-bottom: 1px solid var(--rule); padding-bottom: 16px; margin-bottom: 32px; }
-.page-head h1 { margin: 4px 0 6px; }
+.lede { color: var(--ink-3); font-size: 14px; max-width: 64ch; text-wrap: pretty; }
+
+/* 页头：文武线（粗墨线 + 细纸线）收边，仿古籍版框的天头地脚 */
+.page-head {
+  position: relative;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 40px;
+}
+.page-head::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -5px;
+  height: 1px; background: var(--rule-2);
+}
+.page-head h1 { margin: 2px 0 8px; }
+
+/* 页头压角章：四字两列、右起竖读（如「循序/而进」），盖在文武线右端，仅桌面显示 */
+.page-side {
+  position: absolute; right: 0; bottom: 6px;
+  display: inline-flex; flex-direction: row-reverse; gap: 3px;
+  padding: 5px 6px;
+  background: var(--accent); color: var(--paper);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(251, 249, 244, .3);
+}
+.page-side i {
+  writing-mode: vertical-rl;
+  font-family: var(--serif); font-style: normal; font-weight: 700;
+  font-size: 14px; line-height: 1; letter-spacing: .18em;
+}
+@media (max-width: 1239px) { .page-side { display: none; } }
 
 .muted { color: var(--ink-3); }
 .tiny { font-size: 13px; }
@@ -80,6 +115,7 @@ p { margin: 0 0 12px; }
 .pan-row.is-shi { background: rgba(166, 51, 31, .035); }
 .pan-row .shen { font-size: 13px; color: var(--ink-3); }
 .pan-row .nj { font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
+.pan-row .pan-wx { font-size: 13px; margin-left: 2px; }
 .pan-row .shiy b { font-family: var(--serif); }
 .pan-row .mark { font-family: var(--mono); color: var(--accent); text-align: center; }
 .kong { font-size: 11px; color: var(--ink-3); border: 1px solid var(--rule); padding: 0 3px; border-radius: 2px; margin-left: 3px; }
@@ -91,7 +127,25 @@ p { margin: 0 0 12px; }
 .yao.yin i:first-child { flex: 0 0 44%; }
 .yao.yin i:last-child { flex: 0 0 44%; margin-left: auto; }
 
+/* ---------- 五行着色：汉字本身即语义，颜色只是第二通道 ---------- */
+.wx-木 { color: var(--wx-mu); }
+.wx-火 { color: var(--wx-huo); }
+.wx-土 { color: var(--wx-tu); }
+.wx-金 { color: var(--wx-jin); }
+.wx-水 { color: var(--wx-shui); }
+b[class^="wx-"] { font-weight: 600; }
+
 .fushen { padding: 9px 12px; border-top: 1px dashed var(--rule); font-size: 13px; color: var(--ink-3); }
+
+/* 卦盘底部的五行配色例：一条虚线分隔的细行，木火土金水各归其色 */
+.pan-legend {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 12px; border-top: 1px dashed var(--rule);
+  font-size: 12px; color: var(--ink-3); letter-spacing: .06em;
+}
+.pan-legend i {
+  font-style: normal; font-weight: 600; font-family: var(--serif);
+}
 
 /* ---------- 卦盘手机卡片（桌面隐藏，由 ≤640px 断点启用） ---------- */
 .pan-cards { display: none; }
@@ -259,8 +313,9 @@ p { margin: 0 0 12px; }
   body { font-size: 16px; }
 
   .wrap { max-width: none; padding: 20px 16px 40px; }
-  .page-head { padding-bottom: 14px; margin-bottom: 24px; }
-  h1 { font-size: 24px; }
+  .page-head { padding-bottom: 14px; margin-bottom: 26px; }
+  .page-head::after { bottom: -4px; }
+  h1 { font-size: 26px; }
   h2 { font-size: 19px; }
   .lede { font-size: 15px; line-height: 1.8; }
 

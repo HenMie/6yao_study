@@ -21,8 +21,8 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
         </div>
         <div v-for="y in rows" :key="y.pos" class="pan-row" :class="{ 'is-shi': y.shi }">
           <div class="shen">{{ y.shen }}</div>
-          <div>{{ y.qin }}<span class="muted" style="font-size:13px;margin-left:2px">{{ y.wx }}</span></div>
-          <div class="nj">{{ y.gan }}{{ y.zhi }}{{ y.yy }}</div>
+          <div>{{ y.qin }}<b class="pan-wx" :class="'wx-' + y.wx">{{ y.wx }}</b></div>
+          <div class="nj">{{ y.gan }}<b :class="'wx-' + y.wx">{{ y.zhi }}</b>{{ y.yy }}</div>
           <div>
             <div class="yao" :class="y.yang ? 'yang' : 'yin'"><i /><i v-if="!y.yang" /></div>
           </div>
@@ -38,7 +38,7 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
           <div style="grid-column:span 4;font-size:13px;color:var(--ink-3)">
             {{ p.bian.name }}　
             <span v-for="y in p.yao.filter(x => x.bian)" :key="y.pos">
-              {{ ['初','二','三','四','五','上'][y.pos-1] }}爻→{{ y.bian.qin }}{{ y.bian.zhi }}　
+              {{ ['初','二','三','四','五','上'][y.pos-1] }}爻→{{ y.bian.qin }}<b :class="'wx-' + y.bian.wx">{{ y.bian.zhi }}</b>　
             </span>
           </div>
         </div>
@@ -60,10 +60,10 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
         </div>
         <dl class="pc-fields">
           <dt>六神</dt><dd>{{ y.shen }}</dd>
-          <dt>六亲</dt><dd>{{ y.qin }}<span class="muted"> · {{ y.wx }}</span></dd>
-          <dt>纳甲</dt><dd class="nj">{{ y.gan }}{{ y.zhi }}{{ y.yy }}</dd>
+          <dt>六亲</dt><dd>{{ y.qin }}<span class="muted"> · </span><b :class="'wx-' + y.wx">{{ y.wx }}</b></dd>
+          <dt>纳甲</dt><dd class="nj">{{ y.gan }}<b :class="'wx-' + y.wx">{{ y.zhi }}</b>{{ y.yy }}</dd>
           <template v-if="showBian && y.bian">
-            <dt>变爻</dt><dd class="nj">{{ y.bian.qin }}{{ y.bian.zhi }}</dd>
+            <dt>变爻</dt><dd class="nj">{{ y.bian.qin }}<b :class="'wx-' + y.bian.wx">{{ y.bian.zhi }}</b></dd>
           </template>
         </dl>
       </div>
@@ -78,10 +78,15 @@ const dongPos = computed(() => props.p.yao.filter(y => y.dong).map(y => y.pos))
 
     <div v-if="p.fuShen && p.fuShen.length" class="fushen">
       伏神　<span v-for="(f, i) in p.fuShen" :key="i" style="margin-right:14px">
-        <b style="color:var(--accent)">{{ f.qin }}{{ f.zhi }}</b> 伏于{{ ['初','二','三','四','五','上'][f.pos-1] }}爻
+        <b style="color:var(--accent)">{{ f.qin }}</b><b :class="'wx-' + f.wx">{{ f.zhi }}</b> 伏于{{ ['初','二','三','四','五','上'][f.pos-1] }}爻
       </span>
     </div>
 
-    <GuaWen :gua-name="p.ben.name" :dong="dongPos" />
+    <div class="pan-legend" aria-label="五行配色">
+      <span>五行</span>
+      <i class="wx-木">木</i><i class="wx-火">火</i><i class="wx-土">土</i><i class="wx-金">金</i><i class="wx-水">水</i>
+    </div>
+
+    <GuaWen :gua-name="p.ben.name" :dong="dongPos" :bits="p.ben.bits" />
   </div>
 </template>

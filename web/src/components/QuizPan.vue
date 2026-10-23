@@ -323,7 +323,7 @@ const FIELD_LABEL = { nj: '纳甲', wx: '五行', qin: '六亲', shen: '六神',
     <!-- 动作 -->
     <div style="display:flex;gap:10px;margin-top:14px;align-items:center">
       <n-button size="small" type="primary" :disabled="checked" @click="gradeNow">判卷</n-button>
-      <span class="tiny muted">没填的格子不计错，只记未作答。错因后附对应规则说明。</span>
+      <span class="tiny muted">未填的格子只记未作答、不计错；错因附规则出处。</span>
     </div>
   </div>
 </template>

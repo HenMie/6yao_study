@@ -22,8 +22,8 @@ const tocOpen = ref(false)
 <template>
   <div class="wrap">
     <div class="page-head">
-      <div class="kicker">Manual</div>
       <h1>断卦手册</h1>
+      <span class="page-side" aria-hidden="true"><i>循章</i><i>检阅</i></span>
       <p class="lede">{{ chs.length }} 个条目：18 章正文、四时旺相补章、3 篇附章与1篇导读。与学习单元共用完整讲解，可逐章对照。</p>
     </div>
 

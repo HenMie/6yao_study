@@ -5,12 +5,19 @@ import data from '../data/guaWen.json'
 
 const props = defineProps({
   guaName: { type: String, required: true },   // 引擎四字名，如「天风姤」
-  dong: { type: Array, default: () => [] }     // 动爻位（1..6）
+  dong: { type: Array, default: () => [] },    // 动爻位（1..6）
+  bits: { type: Array, default: null }         // 六爻阴阳，自初爻至上爻
 })
 
 const rec = computed(() => data[props.guaName] || null)
 const trad = ref(false)
 const showZhuan = ref(false)
+
+/* 小卦象：自上而下（上爻→初爻）渲染六条爻线，动爻用朱砂 */
+const miniRows = computed(() => {
+  if (!props.bits) return []
+  return props.bits.map((b, i) => ({ yang: !!b, dong: props.dong.includes(i + 1) })).reverse()
+})
 
 const POS = ['初', '二', '三', '四', '五', '上']
 const field = computed(() => (trad.value ? (r) => r : (r) => r.sc))
@@ -36,8 +43,9 @@ const wenYan = computed(() => rec.value ? (trad.value ? rec.value.wenYan : rec.v
 <template>
   <div v-if="rec" class="guawen">
     <div class="gw-head">
+      <span v-if="miniRows.length" class="gw-gua" aria-hidden="true"><i v-for="(m, idx) in miniRows" :key="idx" :class="{ d: !m.yang, dy: m.dong }" /></span>
       <span class="kicker">经文</span>
-      <span class="gw-title">{{ rec.guaName }} · 第{{ rec.number }}卦　{{ rec.upperSym }}{{ rec.lowerSym }}</span>
+      <span class="gw-title">{{ rec.guaName }} · 第{{ rec.number }}卦</span>
       <button class="gw-toggle" type="button" @click="trad = !trad">{{ trad ? '繁体' : '简体' }}</button>
     </div>
 
@@ -70,15 +78,22 @@ const wenYan = computed(() => rec.value ? (trad.value ? rec.value.wenYan : rec.v
 <style scoped>
 .guawen { border-top: 1px solid var(--rule); padding: 14px 12px 10px; }
 .gw-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+/* 六爻小卦象：六条爻线自上而下，阴爻中断，动爻朱砂 */
+.gw-gua { display: inline-flex; flex-direction: column; gap: 3px; width: 22px; align-self: center; }
+.gw-gua i { display: block; height: 2.5px; border-radius: 1px; background: var(--ink); }
+.gw-gua i.d { background: linear-gradient(to right, var(--ink) 0 40%, transparent 40% 60%, var(--ink) 60% 100%); }
+.gw-gua i.dy { background: var(--accent); }
+.gw-gua i.d.dy { background: linear-gradient(to right, var(--accent) 0 40%, transparent 40% 60%, var(--accent) 60% 100%); }
 .gw-title { font-family: var(--serif); font-size: 15px; color: var(--ink); }
 .gw-toggle {
   margin-left: auto; font-size: 12px; padding: 3px 8px; cursor: pointer;
   border: 1px solid var(--rule); background: var(--paper-2); color: var(--ink-3); border-radius: 2px;
 }
 .gw-toggle:hover { color: var(--accent); border-color: var(--accent); }
-.gw-guaci { margin: 0 0 10px; font-family: var(--serif); font-size: 15px; line-height: 1.9; color: var(--ink); }
+/* 原典文字用楷体，与本站转述的黑体/宋体区分声音 */
+.gw-guaci { margin: 0 0 10px; font-family: var(--kai); font-size: 16px; line-height: 1.9; color: var(--ink); letter-spacing: .02em; }
 .gw-yao { border-left: 2px solid var(--paper-3); padding-left: 10px; }
-.gw-line { display: flex; gap: 10px; line-height: 1.95; font-size: 14px; }
+.gw-line { display: flex; gap: 10px; line-height: 1.95; font-size: 14px; font-family: var(--kai); }
 .gw-line.is-dong .gw-text { color: var(--accent); }
 .gw-pos { flex: 0 0 2em; font-family: var(--serif); color: var(--ink-3); }
 .gw-line.is-dong .gw-pos { color: var(--accent); font-weight: 600; }
@@ -89,7 +104,7 @@ const wenYan = computed(() => rec.value ? (trad.value ? rec.value.wenYan : rec.v
   border: none; cursor: pointer; padding: 0; letter-spacing: .05em;
 }
 .gw-more:hover { color: var(--accent); }
-.gw-zhuan { margin-top: 8px; padding: 10px 12px; background: var(--paper-2); font-size: 14px; line-height: 1.9; }
+.gw-zhuan { margin-top: 8px; padding: 10px 12px; background: var(--paper-2); font-size: 14px; line-height: 1.9; font-family: var(--kai); }
 .gw-zhuan p { margin: 4px 0; color: var(--ink-2); }
 .gw-zhuan b { font-family: var(--serif); color: var(--ink-3); margin-right: 4px; }
 

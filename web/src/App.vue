@@ -19,7 +19,7 @@ const nav = [
       <header class="topbar">
         <div class="topbar-in">
           <router-link to="/path" class="brand">
-            <span class="brand-mark"><i /><i /><i /></span>
+            <span class="brand-seal" aria-hidden="true">爻</span>
             <span class="brand-txt">六爻研习社</span>
           </router-link>
           <nav class="nav">
@@ -57,10 +57,15 @@ const nav = [
   display: flex; align-items: center; gap: 32px;
 }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex: none; }
-.brand-mark { width: 26px; display: grid; gap: 3px; }
-.brand-mark i { display: block; height: 3px; background: var(--ink); }
-.brand-mark i:nth-child(2) { background: var(--accent); }
-.brand-mark i:nth-child(4) { opacity: .25; }
+/* 品牌方印：朱砂底、纸色「爻」字、内缘细线，沿用 seal 语言 */
+.brand-seal {
+  width: 30px; height: 30px; flex: none;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--paper);
+  font-family: var(--serif); font-weight: 900; font-size: 17px; line-height: 1;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1.5px rgba(251, 249, 244, .3);
+}
 .brand-txt { font-family: var(--serif); font-size: 17px; font-weight: 600; letter-spacing: .06em; }
 .nav { display: flex; gap: 2px; flex: 1; }
 .nav a {
@@ -69,10 +74,14 @@ const nav = [
 }
 .nav a:hover { background: var(--paper-2); }
 .nav a.on { color: var(--ink); font-weight: 600; }
-.nav a.on::after {
+/* 当前项底线随路由滑动生长 */
+.nav a::after {
   content: ''; position: absolute; left: 14px; right: 14px; bottom: -19px;
   height: 2px; background: var(--accent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .18s cubic-bezier(.16, 1, .3, 1);
 }
+.nav a.on::after { transform: scaleX(1); }
 .topbar-meta { font-family: var(--mono); font-size: 13px; color: var(--ink-3); white-space: nowrap; }
 
 .site-foot {
@@ -120,8 +129,7 @@ const nav = [
   }
   .brand { height: 52px; }
   .brand-txt { font-size: 16px; letter-spacing: .05em; }
-  .brand-mark { width: 22px; gap: 2.5px; }
-  .brand-mark i { height: 2.5px; }
+  .brand-seal { width: 26px; height: 26px; font-size: 15px; }
 
   .nav {
     order: 0;

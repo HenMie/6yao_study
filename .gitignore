@@ -19,3 +19,7 @@ web/shots/
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# AI 工具本地目录
+.agents/
+.codex/

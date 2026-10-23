@@ -56,8 +56,8 @@ function reset() { ans.value = {}; spec.value = {}; step.value = 0 }
 <template>
   <div class="wrap">
     <div class="page-head">
-      <div class="kicker">Decision Walk</div>
       <h1>断卦走查</h1>
+      <span class="page-side" aria-hidden="true"><i>按法</i><i>推详</i></span>
       <p class="lede">按课程教过的顺序走一遍：取用神 → 看旺衰 → 看动爻 → 看动变 → 查特殊 → 定吉凶 → 出结论。每一步都标了它出自哪一章，结论可以倒查。</p>
     </div>
 

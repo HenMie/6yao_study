@@ -36,8 +36,8 @@ const p = computed(() => {
 <template>
   <div class="wrap">
     <div class="page-head">
-      <div class="kicker">Cases</div>
       <h1>案例库</h1>
+      <span class="page-side" aria-hidden="true"><i>援例</i><i>证法</i></span>
       <p class="lede">{{ CASES.length }} 则案例：课程卦例概要与本站练习示例分别标注。卦盘按爻复算，逐步读作用链。</p>
     </div>
 

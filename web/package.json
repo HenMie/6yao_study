@@ -13,15 +13,17 @@
     "check:desktop-diff": "node desktop-diff.mjs"
   },
   "dependencies": {
+    "@fontsource/noto-serif-sc": "^5.3.1",
     "lunar-javascript": "^1.6.13",
+    "lxgw-wenkai-webfont": "^1.7.0",
     "naive-ui": "^2.40.1",
     "vue": "^3.5.13",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "opencc-js": "^1.4.2",
     "playwright-core": "^1.64.1",
-    "vite": "^6.0.7",
-    "opencc-js": "^1.4.2"
+    "vite": "^6.0.7"
   }
 }

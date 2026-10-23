@@ -29,13 +29,13 @@ const quizTimes = computed(() => state.value.quiz.length)
 <template>
   <div class="wrap">
     <div class="page-head">
-      <div class="kicker">Study Path</div>
       <h1>学习路径</h1>
+      <span class="page-side" aria-hidden="true"><i>循序</i><i>而进</i></span>
     </div>
 
-    <n-card style="margin-bottom:24px;border-top:2px solid var(--accent)">
+    <n-card style="margin-bottom:24px">
       <div class="kicker">§{{ String(units.findIndex(u => u.id === next.id) + 1).padStart(2, '0') }} · 当前单元</div>
-      <h2 style="font-size:26px;margin:8px 0">{{ next.t }}</h2>
+      <h2 style="font-size:26px;font-weight:900;margin:8px 0">{{ next.t }}</h2>
       <div class="cur-sum">
         <p v-for="(s, i) in nextSentences" :key="i">{{ s }}</p>
       </div>
