@@ -138,7 +138,7 @@ const dim = (i) => props.focus !== null && i !== props.focus
           <rect :x="RX" :y="yOf(i) - 2.5" width="45" height="5" rx="1" :fill="moves.includes(i) ? 'var(--accent)' : 'var(--ink)'" />
           <rect :x="RX + 59" :y="yOf(i) - 2.5" width="45" height="5" rx="1" :fill="moves.includes(i) ? 'var(--accent)' : 'var(--ink)'" />
         </template>
-        <text v-if="moves.includes(i)" x="560" :y="yOf(i) + 4.5" class="m f-acc" font-size="13">{{ mark === '○' ? '阴' : '阳' }}</text>
+        <text v-if="moves.includes(i)" x="570" :y="yOf(i) + 4.5" class="m f-acc" font-size="13">{{ mark === '○' ? '阴' : '阳' }}</text>
       </g>
 
       <!-- 底注 -->
